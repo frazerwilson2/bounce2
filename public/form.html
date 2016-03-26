@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <div><ul class="result"></ul></div>
+    <input type='text' id='name'>
+<button id='btnAddUser'>test</button>
+<script   src="https://code.jquery.com/jquery-2.2.1.min.js"   integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="   crossorigin="anonymous"></script>
+<script>
+getNames();
+function getNames() {
+    $.get( "/api/players", function( data ) {
+        console.log(data);
+        $( ".result" ).empty();
+      for(var i=0;i<data.length;i++){
+        var row = row  + '<li>' + data[i].name + '(' + data[i].hasBall + ')</li>';
+      }
+      $( ".result" ).append( row );
+    });
+};
+
+
+ $('#btnAddUser').on('click', addUser);
+ 
+// Add User
+function addUser(event) {
+    var nam = $('#name').val();
+    event.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: '/api/players',
+      data: {'name':nam},
+      success: function() { getNames()},
+      dataType: 'json'
+    });
+};
+
+</script>    
+</body>
+</html>

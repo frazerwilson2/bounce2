@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Angular 2 QuickStart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">    
+  <link rel="stylesheet" href="style.css">
+</head>
+<body ng-app="bounceApp" ng-controller="indexCtrl">
+
+      <div ui-view="viewA"></div>        
+
+      <div class="container" ui-view="viewB"></div>          
+
+<div>
+  <div ng-repeat="x in players" ng-bind="x.name" ng-class="({'select':x.hasBall})"></div>
+</div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script type="text/javascript" src="ui-router.js"></script>
+  <script src="app.js"></script>
+  <script type="text/javascript" src="routes.js"></script>
+  <script src="service.js"></script>
+</body>
+</html>

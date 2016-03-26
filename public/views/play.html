@@ -1,0 +1,13 @@
+<a ng-click="quit()" href='#' class="float-right" ng-show="logged">quit</a>
+<div>
+	{{ballOwner.owner}} has the ball!<br/>
+	since {{ballOwner.taketime | date:'dd MMM HH:mm:ss a'}}<br/>
+	{{distance | number:1}}m away
+	<hr/>
+So you're {{player}}
+{{currentUser}}
+<a ng-click="getBall()" href="#" ng-hide="currentUser.hasBall || !loc.lat">Get ball</a>
+<div ng-show="currentUser.hasBall">You have the ball!</div>
+
+<div >{{loc}}</div>
+</div>
