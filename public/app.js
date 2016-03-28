@@ -96,8 +96,9 @@ $scope.loading = false;
 }
 function showPosition(position) {
     $scope.loc = {"lat": position.coords.latitude,"lon": position.coords.longitude};
-    //$scope.distance = distance($scope.loc.lon, $scope.loc.lat, $scope.ballOwner.loc.lon, $scope.ballOwner.loc.lat);
     $scope.loading = false;
+    $scope.$apply();
+    $scope.distance = distance($scope.loc.lon, $scope.loc.lat, $scope.ballOwner.loc.lon, $scope.ballOwner.loc.lat);
     $scope.$apply();
 }
 
