@@ -1,4 +1,4 @@
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
   //
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.otherwise("/index");
@@ -7,14 +7,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
   .state('index', {
             url: "/index",
-            views: {
-                "viewA": {
-                    templateUrl: "views/menu.html"
-                },
-                "viewB": {
-                    templateUrl: "views/home.html"
-                }
-            }
+            templateUrl: "views/home.html"
         })
     // .state('players', {
     //   url: "/players",
@@ -31,15 +24,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     // })
     .state('play', {
       url: "/play",
-      views: {
-                "viewA": {
-                    templateUrl: "views/menu.html"
-                },
-                "viewB": {
-                    templateUrl: "views/play.html",
-                    controller: 'playCtrl',
-                }
-            },
+      templateUrl: "views/play.html",
+      controller: 'playCtrl',
     })
     // .state('state1.list', {
     //   url: "/list",

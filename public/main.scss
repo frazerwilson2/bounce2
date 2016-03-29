@@ -1,0 +1,106 @@
+/*styles*/
+$navy:#182833;
+$ball:#7CCDFF;
+$grey:#F1F1F1;
+body {
+  padding: 10px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  background: $navy;
+  color:$ball;
+      font-size: 1.2em;
+    line-height: 1.4em;
+   }
+
+button, input[type='text'] {
+    background: #fff;
+    width: 98%;
+    border: none;
+    padding: 1.4%;
+    font-size: 1.2em;
+    margin: 1%;
+    border-radius: 4px;
+    max-width: 500px;
+	color:$ball;
+&.grab {
+	font-size:2em;
+	text-transform: uppercase;
+}
+}
+
+button {
+	cursor:pointer;
+}
+
+input[type='text'] {
+background:$grey;
+max-width:480px;
+}
+
+a {
+	color:$ball;
+}
+
+////////////////////////////// Ball animation
+.logo {
+	padding:5% 0;
+}
+  .ball {
+  width: 50px;
+  height: 50px;
+  background-color: $ball;
+  box-shadow:0px 0px 15px $ball;
+  border-radius: 50%;
+  margin: 8% auto 0;
+  animation: ball 800ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate;
+  animation-delay: 0;
+  button & {
+  	    margin: 0;
+    display: inline-block;
+    float: left;
+  }
+}
+.shadow {
+  width: 50px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: $ball;
+  display:block;
+  margin: 0 auto;
+  position: relative;
+  top: -10px;
+  opacity: 0.4;
+   animation: shadow 800ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate;
+  animation-delay: 0;
+}
+@keyframes ball {
+  0%{transform: translateY(0px);}
+  100% {transform: translateY(-40px);}
+}
+@keyframes shadow {
+  0%{transform: scale(.5);}
+  100% {transform: scale(1.1); opacity:.1;}
+}
+//////////////////////////////
+
+.float-right {
+  float: right; }
+
+.container {
+  max-width: 800px;
+  text-align:center;
+  margin: auto; }
+
+.select {
+  background: #ccc; }
+
+.loading:before {
+	content:"";
+  background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}

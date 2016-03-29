@@ -1,16 +1,22 @@
-<a ng-click="quit()" href='#' class="float-right" ng-show="logged">quit</a>
-<div ng-class="({'loading':loading})">
+<div class="container">
+	<a ng-click="quit()" href='#' class="float-right" ng-show="logged">quit</a>
 	{{ballOwner.owner}} has the ball!<br/>
 	since {{ballOwner.taketime | date:'dd MMM HH:mm:ss a'}}<br/>
 	{{distance | number:1}}m away
-	<hr/>
-So you're {{player}}
-{{currentUser}}
+<!--	<hr/>
+{So you're {{player}}
+{currentUser}}-->
 <div ng-hide="currentUser.hasBall">
-<a ng-click="getBall()" href="#" ng-hide="!loc.lat || distance > range">Get ball</a>
+<button class="grab" ng-click="getBall()" href="#" ng-hide="!loc.lat || distance > range">
+<div class="ball"></div>
+Grab the ball!
+</button>
 <a ng-show="distance > range" ng-click="getLocation()" href="#">Search..</a>
 </div>
 <div ng-show="currentUser.hasBall">You have the ball!</div>
 
-<div >{{loc}}</div>
+<div ng-hide="loc.lat">
+{{loc}}
+<a ng-click="getLocation()" href="#">Try again</a>
+</div>
 </div>

@@ -1,7 +1,11 @@
-<div>
-<h1>Its the ball app</h1>
-<form ng-submit="joinFunc(playername)">
-	<input type="text" ng-model="playername" />
+<div class="container">
+<div class="logo">
+<div class="ball"></div>
+<span class="shadow"></span>
+</div>
+<button ng-show="start" ng-click="startSwitch()">Let's go</button>
+<form ng-hide="start" ng-submit="joinFunc(playername)">
+	<input type="text" placeholder="Name" ng-model="playername" />
 	<button type="submit">Join</button>
 </form>
 </div>

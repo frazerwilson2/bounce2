@@ -2,6 +2,11 @@ var app = angular.module('bounceApp', ['ui.router']);
 
 app.controller('indexCtrl', function($scope, $rootScope, $http, BounceService, $state) {
 
+$scope.start = true;
+$scope.startSwitch = function() {
+  $scope.start = !$scope.start;
+}
+
 $scope.joinFunc = function(name) {
 // checkForPlayer
 checkplayer = BounceService.checkForPlayer(name);
@@ -32,6 +37,10 @@ else {
 }
 })
 
+$rootScope.$on('loading', function(evt, data) {
+$scope.loading = data;
+});
+
 getThePlayers();
 function getThePlayers() {
 playersfunc = BounceService.getPlayers();
@@ -46,7 +55,7 @@ playersfunc.then(function successCallback(response) {
 
   });
 
-app.controller('playCtrl', function($scope, $http, BounceService, $state) {
+app.controller('playCtrl', function($scope, $rootScope, $http, BounceService, $state) {
 
 $scope.player = localStorage.getItem('user');
 getDetail();
@@ -83,20 +92,20 @@ $scope.getBall = function() {
   });
 }
 
-$scope.loading = false;
+  $rootScope.$emit('loading', false);
  $scope.getLocation = function() {
-  $scope.loading = true;
+  $rootScope.$emit('loading', true);
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
         $scope.loc = "Geolocation is not supported by this browser.";
         $scope.$apply();
-        $scope.loading = false;
+        $rootScope.$emit('loading', false);
     }
 }
 function showPosition(position) {
     $scope.loc = {"lat": position.coords.latitude,"lon": position.coords.longitude};
-    $scope.loading = false;
+    $rootScope.$emit('loading', false);
     $scope.$apply();
     $scope.distance = distance($scope.loc.lon, $scope.loc.lat, $scope.ballOwner.loc.lon, $scope.ballOwner.loc.lat);
     $scope.$apply();
