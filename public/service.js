@@ -12,7 +12,14 @@ app.service("BounceService", function ($http) {
    this.checkForPlayer = function(name) {
      return $http({
         method: 'GET',
-        url: '/api/players/' + name + '/' + false
+        url: '/api/players/' + name
+      });
+   }
+
+   this.newPlayer = function(name) {
+     return $http({
+        method: 'POST',
+        url: '/api/players/' + name
       });
    }
 

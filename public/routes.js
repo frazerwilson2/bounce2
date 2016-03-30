@@ -5,23 +5,22 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
   //
   // Now set up the states
   $stateProvider
-  .state('index', {
-            url: "/index",
-            templateUrl: "views/home.html"
-        })
-    // .state('players', {
-    //   url: "/players",
-    //   //controller: 'indexCtrl',
-    //   views: {
-    //             "viewA": {
-    //                 templateUrl: "views/menu.html"
-    //             },
-    //             "viewB": {
-    //                 templateUrl: "views/players.html",
-    //                 controller: 'playersCtrl',
-    //             }
-    //         },
-    // })
+    .state('index', {
+        url: "/index",
+        templateUrl: "views/home.html"
+    })
+    .state('login', {
+        url: "/login",
+        templateUrl: "views/login.html"
+    })
+    .state('join', {
+        url: "/join",
+        templateUrl: "views/join.html"
+    })
+    .state('players', {
+        url: "/players",
+        templateUrl: "views/players.html"
+    })
     .state('play', {
       url: "/play",
       templateUrl: "views/play.html",

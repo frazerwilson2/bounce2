@@ -1,4 +1,4 @@
-var app = angular.module('bounceApp', ['ui.router']);
+var app = angular.module('bounceApp', ['ui.router', 'ngAnimate']);
 
 app.controller('indexCtrl', function($scope, $rootScope, $http, BounceService, $state) {
 
@@ -12,11 +12,28 @@ $scope.joinFunc = function(name) {
 checkplayer = BounceService.checkForPlayer(name);
 checkplayer.then(function successCallback(response) {
     console.log(response.data);
-    localStorage.setItem('user', name);
-    $state.go('play');
+    if(response.data.name){
+        localStorage.setItem('user', name);
+        $state.go('play');
+    }
+    else {
+      $state.go('join');
+    }
   }, function errorCallback(response) {
     // called asynchronously if an error occurs
     // or server returns response with an error status.
+    console.log(response);
+  });
+}
+
+// newPlayer
+$scope.joinFunc = function(name) {
+newplayer = BounceService.newPlayer(name);
+newplayer.then(function successCallback(response) {
+    console.log(response.data);
+        localStorage.setItem('user', name);
+        $state.go('play');
+  }, function errorCallback(response) {
     console.log(response);
   });
 }
@@ -76,6 +93,7 @@ ballfunc = BounceService.ballData();
 ballfunc.then(function successCallback(response) {
     var latest = response.data.length;
     $scope.ballOwner = response.data[latest - 1];
+    timeSince();
   }, function errorCallback(response) {
     console.log(response);
   });
@@ -118,18 +136,22 @@ function showError(error) {
     switch(error.code) {
         case error.PERMISSION_DENIED:
             $scope.loc = "User denied the request for Geolocation."
+            $rootScope.$emit('loading', false);
             $scope.$apply();
             break;
         case error.POSITION_UNAVAILABLE:
             $scope.loc = "Location information is unavailable."
+            $rootScope.$emit('loading', false);
             $scope.$apply();
             break;
         case error.TIMEOUT:
             $scope.loc = "The request to get user location timed out."
+            $rootScope.$emit('loading', false);
             $scope.$apply();
             break;
         case error.UNKNOWN_ERROR:
             $scope.loc = "An unknown error occurred."
+            $rootScope.$emit('loading', false);
             $scope.$apply();
             break;
     }
@@ -154,6 +176,31 @@ if (typeof(Number.prototype.toRad) === "undefined") {
   }
 }
 
+function timeSince() {
+var _initial = '2016-01-21T10:17:28.593Z';
+var fromTime = new Date(_initial);
+var fromTime = new Date($scope.ballOwner.taketime);
+var toTime = new Date();
+
+var differenceTravel = toTime.getTime() - fromTime.getTime();
+var seconds = Math.floor((differenceTravel) / (1000));
+
+ function secondsToString(seconds)
+{
+var numyears = Math.floor(seconds / 31536000);
+var numdays = Math.floor((seconds % 31536000) / 86400); 
+var numhours = Math.floor(((seconds % 31536000) % 86400) / 3600);
+var numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
+var numseconds = (((seconds % 31536000) % 86400) % 3600) % 60;
+return numyears + " years " +  numdays + " days " + numhours + " hours " + numminutes + " minutes " + numseconds + " seconds";
+
+}
+console.log(fromTime);
+console.log(toTime);
+console.log(secondsToString(seconds));
+$scope.timeStreak = secondsToString(seconds);
+}
+
 });
 
 app.run(function($rootScope, $urlRouter, $state) {
@@ -162,11 +209,11 @@ app.run(function($rootScope, $urlRouter, $state) {
       if(checkuser){
         $rootScope.$emit('logged', checkuser);
       }
-      if(!checkuser) {
-        $state.go('index');
-      }
-      else {
-       $state.go('play'); 
-      }
+      // if(!checkuser) {
+      //   $state.go('index');
+      // }
+      // else {
+      //  $state.go('play'); 
+      // }
     });
   });

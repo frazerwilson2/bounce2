@@ -8,8 +8,8 @@ var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
-//mongoose.connect('mongodb://localhost/'); // connect to our database
-mongoose.connect('mongodb://frazer:frazer@ds013569.mlab.com:13569/heroku_c741jbjg');
+mongoose.connect('mongodb://localhost/'); // connect to our database
+//mongoose.connect('mongodb://frazer:frazer@ds013569.mlab.com:13569/heroku_c741jbjg');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -72,7 +72,7 @@ router.route('/players')
         });
     });
 
- router.route('/players/:player_name/:new_user')
+ router.route('/players/:player_name')
  
     // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
     .get(function(req, res) {
@@ -86,17 +86,22 @@ router.route('/players')
             }
             else {
                 //New user
-                var player = new Player();
-                player.name = req.params.player_name;  
-                player.hasBall = false;
-                // save the player and check for errors
-                player.save(function(err) {
-                    if (err)
-                        res.send(err);
-                    res.json({ message: 'user' + req.params.player_name },{newUser:true});
-                });
+                res.json({ message: 'not found'});
             }
         });
+    })
+
+    .post(function(req, res) {        
+        var player = new Player();
+        player.name = req.params.player_name;
+        player.hasBall = false;
+
+        // save the player and check for errors
+        player.save(function(err, data) {
+            if (err)
+                res.send(err);
+            res.json(data);
+        });       
     });
 
     router.route('/getball')

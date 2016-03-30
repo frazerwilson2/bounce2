@@ -3,9 +3,10 @@
 <div class="ball"></div>
 <span class="shadow"></span>
 </div>
-<button ng-show="start" ng-click="startSwitch()">Let's go</button>
-<form ng-hide="start" ng-submit="joinFunc(playername)">
-	<input type="text" placeholder="Name" ng-model="playername" />
-	<button type="submit">Join</button>
-</form>
+<button ui-sref="login">Let's go</button>
+
+<!--<div>
+  <div ng-repeat="x in players" ng-bind="x.name" ng-class="({'select':x.hasBall})"></div>
+</div>-->
+
 </div>

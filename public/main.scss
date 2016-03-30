@@ -3,7 +3,8 @@ $navy:#182833;
 $ball:#7CCDFF;
 $grey:#F1F1F1;
 body {
-  padding: 10px;
+  //padding: 10px;
+  margin:0;
   font-family: 'Raleway', sans-serif;
   font-size: 14px;
   background: $navy;
@@ -20,8 +21,7 @@ button, input[type='text'] {
     font-size: 1.2em;
     margin: 1%;
     border-radius: 4px;
-    max-width: 500px;
-	color:$ball;
+	  color:$ball;
 &.grab {
 	font-size:2em;
 	text-transform: uppercase;
@@ -30,11 +30,14 @@ button, input[type='text'] {
 
 button {
 	cursor:pointer;
+  &:disabled {
+  opacity:0.5;
+}
 }
 
 input[type='text'] {
 background:$grey;
-max-width:480px;
+width:95%;
 }
 
 a {
@@ -84,15 +87,32 @@ a {
 //////////////////////////////
 
 .float-right {
-  float: right; }
+    float: right;
+    position: absolute;
+    right: 2%;
+    top: 2%;
+    font-size:2em;
+ }
 
 .container {
-  max-width: 800px;
+  max-width: 100%;
   text-align:center;
-  margin: auto; }
+  margin: auto;
+  background:$navy; 
+  position:absolute;
+  top:0;
+  width:100%;
+  height:100%;
+}
+
+.strong {
+  font-weight:600;
+}
 
 .select {
-  background: #ccc; }
+  background: $ball;
+color:$navy;
+   }
 
 .loading:before {
 	content:"";
@@ -104,3 +124,59 @@ a {
     left: 0;
     z-index: 999;
 }
+.loading:after {
+    content: "\f110";
+    -webkit-animation: fa-spin 1s infinite steps(8);
+    animation: fa-spin 1s infinite steps(8);
+    display: inline-block;
+    font: normal normal normal 14em FontAwesome;
+    font-size: 4em;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    z-index: 99999999999;
+    position: absolute;
+    top: 10%;
+    left: calc(50% - 3%);
+}
+
+/* leaving animations ----------------------------------------- */
+/* rotate and fall */
+@keyframes rotateFall {
+    0%      { transform: rotateZ(0deg); }
+    20%     { transform: rotateZ(10deg); animation-timing-function: ease-out; }
+    40%     { transform: rotateZ(17deg); }
+    60%     { transform: rotateZ(16deg); }
+    100%    { transform: translateY(100%) rotateZ(17deg); }
+}
+
+/* slide in from the bottom */
+@keyframes slideOutLeft {
+    to      { transform: translateX(-100%); }
+}
+
+/* rotate out newspaper */
+@keyframes rotateOutNewspaper {
+    to      { transform: translateZ(-3000px) rotateZ(360deg); opacity: 0; }
+}
+
+/* entering animations --------------------------------------- */
+/* scale up */
+@keyframes scaleUp {
+    from    { opacity: 0.3; -webkit-transform: scale(0.8); }
+}
+
+/* slide in from the right */
+@keyframes slideInRight {
+    from    { transform:translateX(100%); }
+    to      { transform: translateX(0); }
+}
+
+/* slide in from the bottom */
+@keyframes slideInUp {
+    from    { transform:translateY(100%); }
+    to      { transform: translateY(0); }
+}
+
+.ng-enter           { animation: slideInRight 0.5s both ease-in; z-index: 9999; }
+.ng-leave           { animation: slideOutLeft 0.5s both ease-in; z-index: 8888; }
