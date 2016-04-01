@@ -7,8 +7,12 @@
 <div ng-hide="currentUser.hasBall">
 <p class="strong">{{ballOwner.owner}} has the ball!</p>
 <!--<p>since {{ballOwner.taketime | date:'dd MMM HH:mm:ss a'}}</p>-->
-<p ng-bind="timeStreak"></p>
-<p ng-show="distance > range">{{distance | number:1}}m away</p>
+<span ng-show="streak[0]" ng-bind="streak[0] + ' Years,'"></span>
+<span ng-show="streak[1]" ng-bind="streak[1] + ' Days,'"></span>
+<span ng-show="streak[2]" ng-bind="streak[2] + ' Hours,'"></span>
+<span ng-show="streak[3]" ng-bind="streak[3] + ' Minutes,'"></span>
+<span ng-show="streak[4]" ng-bind="streak[4] + ' Seconds'"></span>
+<span ng-show="distance > range">{{distance | number:1}}m away</span>
 
 <button class="grab" ng-click="getBall()" href="#" ng-hide="!loc.lat || distance > range">
 <div class="ball"></div>

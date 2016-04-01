@@ -187,13 +187,14 @@ var seconds = Math.floor((differenceTravel) / (1000));
 
  function secondsToString(seconds)
 {
-var numyears = Math.floor(seconds / 31536000);
-var numdays = Math.floor((seconds % 31536000) / 86400); 
-var numhours = Math.floor(((seconds % 31536000) % 86400) / 3600);
-var numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
-var numseconds = (((seconds % 31536000) % 86400) % 3600) % 60;
-return numyears + " years " +  numdays + " days " + numhours + " hours " + numminutes + " minutes " + numseconds + " seconds";
-
+$scope.streak = [];
+$scope.streak.push(Math.floor(seconds / 31536000));
+$scope.streak.push(Math.floor((seconds % 31536000) / 86400)); 
+$scope.streak.push(Math.floor(((seconds % 31536000) % 86400) / 3600));
+$scope.streak.push(Math.floor((((seconds % 31536000) % 86400) % 3600) / 60));
+$scope.streak.push((((seconds % 31536000) % 86400) % 3600) % 60);
+//return numyears + " years " +  numdays + " days " + numhours + " hours " + numminutes + " minutes " + numseconds + " seconds";
+console.log($scope.streak);
 }
 console.log(fromTime);
 console.log(toTime);
