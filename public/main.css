@@ -43,6 +43,10 @@ a {
   box-shadow: 0px 0px 15px #7CCDFF;
   border-radius: 50%;
   margin: 8% auto 0;
+  -webkit-animation: ball 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
+  -moz-animation: ball 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
+  -o-animation: ball 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
+  -ms-animation: ball 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
   animation: ball 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
   animation-delay: 0; }
   button .ball {
@@ -60,6 +64,10 @@ a {
   position: relative;
   top: -10px;
   opacity: 0.4;
+  -webkit-animation: shadow 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
+  -moz-animation: shadow 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
+  -o-animation: shadow 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
+  -ms-animation: shadow 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
   animation: shadow 800ms cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
   animation-delay: 0; }
 
@@ -129,6 +137,9 @@ a {
 .loading:after {
   content: "\f110";
   -webkit-animation: fa-spin 1s infinite steps(8);
+  -moz-animation: fa-spin 1s infinite steps(8);
+  -o-animation: fa-spin 1s infinite steps(8);
+  -ms-animation: fa-spin 1s infinite steps(8);
   animation: fa-spin 1s infinite steps(8);
   display: inline-block;
   font: normal normal normal 14em FontAwesome;
@@ -188,9 +199,25 @@ a {
     transform: translateX(0); } }
 
 .ng-enter {
+  -webkit-animation: slideInRight 0.5s both ease-in;
+  z-index: 9999;
+  -moz-animation: slideInRight 0.5s both ease-in;
+  z-index: 9999;
+  -o-animation: slideInRight 0.5s both ease-in;
+  z-index: 9999;
+  -ms-animation: slideInRight 0.5s both ease-in;
+  z-index: 9999;
   animation: slideInRight 0.5s both ease-in;
   z-index: 9999; }
 
 .ng-leave {
+  -webkit-animation: slideOutLeft 0.5s both ease-in;
+  z-index: 8888;
+  -moz-animation: slideOutLeft 0.5s both ease-in;
+  z-index: 8888;
+  -o-animation: slideOutLeft 0.5s both ease-in;
+  z-index: 8888;
+  -ms-animation: slideOutLeft 0.5s both ease-in;
+  z-index: 8888;
   animation: slideOutLeft 0.5s both ease-in;
   z-index: 8888; }
