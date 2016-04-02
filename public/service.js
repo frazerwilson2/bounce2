@@ -39,4 +39,12 @@ app.service("BounceService", function ($http) {
       });
    }
 
+   this.bounceBall = function(id, lat, lon) {
+ // /bounce/:ball_id/:player_lat/:player_lon
+    return $http({
+        method: 'POST',
+        url: '/api/bounce/' + id + '/' + lat + '/' + lon
+      });
+   }
+
 });

@@ -20,11 +20,14 @@ Grab the ball!
 </button>
 <a ng-show="distance > range" ng-click="getLocation()" href="#">Search..</a>
 <div ng-hide="loading">
-{{loc}}
+<span ng-bind="loc" ng-hide="loc.lat"></span>
 <a ng-hide="loc.lat" ng-click="getLocation()" href="#">Try again</a>
 </div>
 </div>
 
-<div ng-show="currentUser.hasBall">You have the ball!</div>
+<div ng-show="currentUser.hasBall">
+	You have the ball!<br/>
+<button ng-click="bounceBall()">Bounce</a>
+</div>
 
 </div>

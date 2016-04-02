@@ -18,6 +18,7 @@ checkplayer.then(function successCallback(response) {
     }
     else {
       $state.go('join');
+      $rootScope.$emit('user', name);
     }
   }, function errorCallback(response) {
     // called asynchronously if an error occurs
@@ -26,8 +27,12 @@ checkplayer.then(function successCallback(response) {
   });
 }
 
+$rootScope.$on('user', function(event, data) {
+$scope.playername = data;
+  });
+
 // newPlayer
-$scope.joinFunc = function(name) {
+$scope.newJoinFunc = function(name) {
 newplayer = BounceService.newPlayer(name);
 newplayer.then(function successCallback(response) {
     console.log(response.data);
@@ -66,7 +71,7 @@ playersfunc.then(function successCallback(response) {
   }, function errorCallback(response) {
     // called asynchronously if an error occurs
     // or server returns response with an error status.
-    console.log(response);
+    //console.log(response);
   });
 }
 
@@ -93,6 +98,7 @@ ballfunc = BounceService.ballData();
 ballfunc.then(function successCallback(response) {
     var latest = response.data.length;
     $scope.ballOwner = response.data[latest - 1];
+    //console.log(response.data[latest - 1]);
     timeSince();
   }, function errorCallback(response) {
     console.log(response);
@@ -106,7 +112,6 @@ $scope.getBall = function() {
     getDetail();
     getBallData();
   }, function errorCallback(response) {
-    console.log(response);
   });
 }
 
@@ -115,6 +120,7 @@ $scope.getBall = function() {
   $rootScope.$emit('loading', true);
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
+        console.log($scope.loc);
     } else {
         $scope.loc = "Geolocation is not supported by this browser.";
         $scope.$apply();
@@ -157,6 +163,18 @@ function showError(error) {
     }
 }
 
+// bounceBall
+$scope.bounceBall = function() {
+  $scope.getLocation();
+  bounceit = BounceService.bounceBall($scope.ballOwner._id, $scope.loc.lat, $scope.loc.lon);
+  bounceit.then(function successCallback(response) {
+    getDetail();
+    getBallData();
+  }, function errorCallback(response) {
+    console.log(response);
+  });
+}
+
 function distance(lon1, lat1, lon2, lat2) {
   var R = 6371; // Radius of the earth in km
   var dLat = (lat2-lat1).toRad();  // Javascript functions in radians
@@ -194,11 +212,11 @@ $scope.streak.push(Math.floor(((seconds % 31536000) % 86400) / 3600));
 $scope.streak.push(Math.floor((((seconds % 31536000) % 86400) % 3600) / 60));
 $scope.streak.push((((seconds % 31536000) % 86400) % 3600) % 60);
 //return numyears + " years " +  numdays + " days " + numhours + " hours " + numminutes + " minutes " + numseconds + " seconds";
-console.log($scope.streak);
+//console.log($scope.streak);
 }
-console.log(fromTime);
-console.log(toTime);
-console.log(secondsToString(seconds));
+//console.log(fromTime);
+//console.log(toTime);
+//console.log(secondsToString(seconds));
 $scope.timeStreak = secondsToString(seconds);
 }
 

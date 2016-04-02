@@ -1,7 +1,8 @@
 <div class="container">
-<form ng-submit="joinFunc(playername)">
+<form ng-submit="newJoinFunc(playername)">
+	{{playername}}
 	<p>Didn't find you. You new?</p>
-	<button type="submit" ng-disabled="!playername">Join</button>
+	<button type="submit">Join</button>
 	<a ui-sref="login">try again</a>
 </form>
 </div>

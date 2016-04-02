@@ -142,6 +142,18 @@ router.route('/players')
         });
      });
 
+router.route('/bounce/:ball_id/:player_lat/:player_lon')
+.post(function(req, res) {
+        // update ball pos
+        id = req.params.ball_id;
+        loc = {lat:req.params.player_lat, lon:req.params.player_lon};
+        bouncetime = new Date();
+        Ball.update({ _id: id }, { loc: loc, bouncetime: bouncetime }, { multi: false }, function (err, raw) {
+          if (err) return handleError(err);
+          console.log('The raw response from Mongo was ', raw);
+        });
+     });
+
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
