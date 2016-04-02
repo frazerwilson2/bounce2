@@ -47,6 +47,8 @@ a {
 ////////////////////////////// Ball animation
 .logo {
 	padding:5% 0;
+      position: absolute;
+    z-index: 9;
 }
   .ball {
   width: 50px;
@@ -129,9 +131,9 @@ a {
 .container {
   max-width: 100%;
   text-align:center;
-  margin: 10% auto;
+  margin: auto;
   background:$navy; 
-  position:relative;
+  position:absolute;
   top:0;
   width:100%;
   height:100%;
