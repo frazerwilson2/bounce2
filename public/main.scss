@@ -47,8 +47,6 @@ a {
 ////////////////////////////// Ball animation
 .logo {
 	padding:5% 0;
-      position: absolute;
-    z-index: 9;
 }
   .ball {
   width: 50px;
@@ -119,6 +117,18 @@ a {
     opacity:.1;}
 }
 //////////////////////////////
+
+.testanim {
+  animation: wiggletail 1s infinite;
+    width: 200px;
+    height: 200px;
+    background: orange;
+}
+
+@-webkit-keyframes wiggletail {
+  0%, 100%   { -webkit-transform: rotate(5deg); }
+  50% { -webkit-transform: rotate(-5deg); }
+}
 
 .float-right {
     float: right;
