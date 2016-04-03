@@ -1,37 +1,29 @@
 /*styles*/
+html, body, .container {
+  height: 100%; }
+
 body {
   margin: 0;
   font-family: 'Raleway', sans-serif;
-  font-size: 14px;
   background: #182833;
-  color: #7CCDFF;
-  font-size: 1.2em;
-  line-height: 1.4em; }
+  color: #7CCDFF; }
+
+.inverse {
+  background: #7CCDFF;
+  color: #182833; }
 
 button, input[type='text'] {
   background: #fff;
-  width: 98%;
-  border: none;
-  padding: 1.4%;
-  font-size: 1.2em;
-  margin: 1%;
-  border-radius: 4px;
   color: #7CCDFF; }
-  button.grab, input[type='text'].grab {
-    font-size: 2em;
-    text-transform: uppercase; }
-
-button {
-  cursor: pointer; }
-  button:disabled {
-    opacity: 0.5; }
 
 input[type='text'] {
-  background: #F1F1F1;
-  width: 95%; }
+  background: #F1F1F1; }
 
 a {
   color: #7CCDFF; }
+
+.inline {
+  display: inline-block; }
 
 .logo {
   padding: 5% 0; }
@@ -101,25 +93,11 @@ a {
     transform: scale(1.5);
     opacity: 0.2; } }
 
-.float-right {
-  float: right;
-  position: absolute;
-  right: 2%;
-  top: 2%;
-  font-size: 2em; }
-
 .container {
-  max-width: 100%;
   text-align: center;
-  margin: auto;
   background: #182833;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%; }
-
-.strong {
-  font-weight: 600; }
+  overflow-y: auto;
+  padding-bottom: 90px; }
 
 .select {
   background: #7CCDFF;
@@ -214,3 +192,22 @@ a {
   animation-fill-mode: both;
   -webkit-animation-name: fadeOut;
   animation-name: fadeOut; }
+
+h1, h2, h3, h4, h5, h6 {
+  color: #7CCDFF; }
+
+.col-sm-3 {
+  width: 25%;
+  display: inline-block;
+  float: left; }
+
+hr {
+  border-top-color: #7CCDFF; }
+
+#footer {
+  padding: 0;
+  position: fixed;
+  border-top: 1px #7CCDFF solid;
+  width: 100%;
+  left: 0;
+  bottom: 0; }

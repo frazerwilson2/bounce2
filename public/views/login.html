@@ -1,6 +1,8 @@
-<div class="container">
-<form ng-submit="joinFunc(playername)">
-	<input type="text" placeholder="Name" ng-model="playername" />
-	<button type="submit" ng-disabled="!playername">Join</button>
+<form ng-submit="joinFunc(playername)" class="form-horizontal p-t-1">
+	<div class="form-group">
+		<input type="text" placeholder="Name" class="form-control" ng-model="playername" />
+	</div>
+	<div class="form-group">
+		<button type="submit" ng-disabled="!playername" class="btn btn-default">Join</button>
+	</div>
 </form>
-</div>

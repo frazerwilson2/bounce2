@@ -1,33 +1,54 @@
-<div class="container">
-	<a ng-click="quit()" href='#' class="float-right" ng-show="logged">
-<i class="fa fa-sign-out"></i>
-	</a>
+
 <!--{So you're {{player}}
 {currentUser}}-->
-<div ng-hide="currentUser.hasBall">
-<p class="strong">{{ballOwner.owner}} has the ball!</p>
+<div>
+	<h2 class="p-t-1">Ball owner is</h2>
+<div class="well p-t-1 p-b-1 inverse">
+<span ng-hide="currentUser.hasBall">{{ballOwner.owner}}</span>	
+<span ng-show="currentUser.hasBall">You</span>
+</div>
 <!--<p>since {{ballOwner.taketime | date:'dd MMM HH:mm:ss a'}}</p>-->
-<span ng-show="streak[0]" ng-bind="streak[0] + ' Years,'"></span>
-<span ng-show="streak[1]" ng-bind="streak[1] + ' Days,'"></span>
-<span ng-show="streak[2]" ng-bind="streak[2] + ' Hours,'"></span>
-<span ng-show="streak[3]" ng-bind="streak[3] + ' Minutes,'"></span>
-<span ng-show="streak[4]" ng-bind="streak[4] + ' Seconds'"></span>
-<span ng-show="distance > range">{{distance | number:1}}m away</span>
 
-<button class="grab" ng-click="getBall()" href="#" ng-hide="!loc.lat || distance > range">
+<div class="row p-t-1">
+<!-- <div ng-show="streak[0]" class="col-sm-3"><h2 ng-bind="streak[0]"></h2><span>Years</span></div> -->
+<div class="col-sm-3"><h2 ng-bind="streak[1]"></h2><span>Days</span></div>
+<div class="col-sm-3"><h2 ng-bind="streak[2]"></h2><span>Hours</span></div>
+<div class="col-sm-3"><h2 ng-bind="streak[3]"></h2><span>Minutes</span></div>
+<div class="col-sm-3"><h2 ng-bind="streak[4]"></h2><span>Seconds</span></div>
+</div>
+<hr/>
+
+<div ng-hide="currentUser.hasBall">
+<h2 ng-show="distance > range">You are <strong>{{distance | number:0}}m</strong> away</h2>
+
+<button ng-click="getBall()" class="btn btn-default" ng-hide="!loc.lat || distance > range">
 <div class="ball"></div>
 Grab the ball!
 </button>
-<a ng-show="distance > range" ng-click="getLocation()" href="#">Search..</a>
+
+<div ng-show="distance > range">Too far to grab!
+<a ng-click="getLocation()" class="btn btn-default m-l-1"><i class="fa fa-refresh"></i></a>
+</div>
+
 <div ng-hide="loading">
-<span ng-bind="loc" ng-hide="loc.lat"></span>
-<a ng-hide="loc.lat" ng-click="getLocation()" href="#">Try again</a>
+<p ng-bind="loc" ng-hide="loc.lat"></p>
+<a ng-hide="loc.lat" ng-click="getLocation()" class="btn btn-default">Try again</a>
 </div>
 </div>
 
 <div ng-show="currentUser.hasBall">
-	You have the ball!<br/>
-<button ng-click="bounceBall()">Bounce</a>
+	<div class="logo">
+	<div class="ball"></div>
+	<span class="shadow"></span>
+	</div>
+<button class="btn btn-default" ng-click="bounceBall()">Bounce</a>
 </div>
 
-</div>
+
+<div id="footer">
+      <div class="container p-t-1 p-b-1">
+    	<a ng-click="quit()" href='#' class="float-right" ng-show="logged">
+		<i class="fa fa-2x fa-sign-out"></i>
+		</a>
+      </div>
+    </div>

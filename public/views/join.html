@@ -1,8 +1,10 @@
-<div class="container">
-<form ng-submit="newJoinFunc(playername)">
-	{{playername}}
-	<p>Didn't find you. You new?</p>
-	<button type="submit">Join</button>
-	<a ui-sref="login">try again</a>
+<form ng-submit="newJoinFunc(playername)" class="form-horizontal p-t-1">
+<h1 ng-show="playername">Didn't find a {{playername}}</h1>
+	<p ng-show="playername">are you new?</p>
+	<div ng-show="playername" class="form-group">
+		<button type="submit" class="btn">Join</button>
+	</div>
+	<div class="form-group">
+		<a ui-sref="login">try again</a>
+	</div>
 </form>
-</div>

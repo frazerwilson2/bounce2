@@ -2,46 +2,39 @@
 $navy:#182833;
 $ball:#7CCDFF;
 $grey:#F1F1F1;
+
+html, body, .container {
+  height:100%;
+}
+
 body {
   //padding: 10px;
   margin:0;
   font-family: 'Raleway', sans-serif;
-  font-size: 14px;
   background: $navy;
   color:$ball;
-      font-size: 1.2em;
-    line-height: 1.4em;
-   }
+ }
+
+ .inverse {
+  background:$ball;
+  color:$navy;
+ }
 
 button, input[type='text'] {
     background: #fff;
-    width: 98%;
-    border: none;
-    padding: 1.4%;
-    font-size: 1.2em;
-    margin: 1%;
-    border-radius: 4px;
 	  color:$ball;
-&.grab {
-	font-size:2em;
-	text-transform: uppercase;
-}
-}
-
-button {
-	cursor:pointer;
-  &:disabled {
-  opacity:0.5;
-}
 }
 
 input[type='text'] {
 background:$grey;
-width:95%;
 }
 
 a {
 	color:$ball;
+}
+
+.inline {
+  display:inline-block;
 }
 
 ////////////////////////////// Ball animation
@@ -144,27 +137,11 @@ a {
 }
 //////////////////////////////
 
-.float-right {
-    float: right;
-    position: absolute;
-    right: 2%;
-    top: 2%;
-    font-size:2em;
- }
-
 .container {
-  max-width: 100%;
   text-align:center;
-  margin: auto;
   background:$navy; 
-  position:absolute;
-  top:0;
-  width:100%;
-  height:100%;
-}
-
-.strong {
-  font-weight:600;
+  overflow-y:auto;
+  padding-bottom: 90px;
 }
 
 .select {
@@ -261,4 +238,29 @@ color:$navy;
   animation-fill-mode: both;
     -webkit-animation-name: fadeOut;
   animation-name: fadeOut;
+}
+
+
+//// Bootstrap overrwites
+h1, h2, h3, h4, h5, h6 {
+  color:$ball;
+}
+
+.col-sm-3 {
+    width: 25%;
+    display: inline-block;
+    float: left;
+}
+
+hr {
+  border-top-color:$ball;
+}
+
+#footer {
+    padding: 0;
+    position: fixed;
+    border-top: 1px $ball solid;
+    width: 100%;
+    left: 0;
+    bottom: 0;
 }
