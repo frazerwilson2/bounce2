@@ -10,7 +10,9 @@ html, body, .container {
 body {
   //padding: 10px;
   margin:0;
-  font-family: 'Raleway', sans-serif;
+//  font-family: 'Raleway', sans-serif;
+  font-family: 'Oswald', sans-serif;
+  text-transform:uppercase;
   background: $navy;
   color:$ball;
  }
@@ -18,6 +20,9 @@ body {
  .inverse {
   background:$ball;
   color:$navy;
+  h2 {
+    color:$navy;
+  }
  }
 
 button, input[type='text'] {
@@ -35,6 +40,17 @@ a {
 
 .inline {
   display:inline-block;
+}
+
+h2 {
+  -webkit-transition:all 200ms;
+  transition:all 200ms;
+}
+
+.highlight h2 {
+  color: lightgreen;
+  font-size:2.5rem;
+  transition: all 200ms;
 }
 
 ////////////////////////////// Ball animation
@@ -246,6 +262,10 @@ h1, h2, h3, h4, h5, h6 {
   color:$ball;
 }
 
+.btn {
+  font-size:2rem;
+}
+
 .col-sm-3 {
     width: 25%;
     display: inline-block;
@@ -263,4 +283,13 @@ hr {
     width: 100%;
     left: 0;
     bottom: 0;
+}
+.passControl {
+  width:160px;
+    .passBox {
+      width: 50px;
+      height: 50px;
+      border: 1px red solid;
+      display: inline-block;
+  }
 }

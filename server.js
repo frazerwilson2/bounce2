@@ -8,8 +8,8 @@ var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
-//mongoose.connect('mongodb://localhost/'); // connect to our database
-mongoose.connect('mongodb://frazer:frazer@ds013569.mlab.com:13569/heroku_c741jbjg');
+mongoose.connect('mongodb://localhost/'); // connect to our database
+//mongoose.connect('mongodb://frazer:frazer@ds013569.mlab.com:13569/heroku_c741jbjg');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -106,7 +106,7 @@ router.route('/players')
 
     router.route('/getball')
     .get(function(req, res) {
-        Ball.find(function(err, ball) {
+        Ball.findOne({}, {}, { sort: { 'taketime' : -1 } }, function(err, ball) {
             if (err)
                 res.send(err);
 

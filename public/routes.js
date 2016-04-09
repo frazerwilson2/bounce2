@@ -23,8 +23,19 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     })
     .state('play', {
       url: "/play",
+      params: {
+        check: true,
+      },
       templateUrl: "views/play.html",
       controller: 'playCtrl',
+    })
+    .state('grab', {
+      url: "/grab",
+      params: {
+        grabdata:null,
+      },
+      templateUrl: "views/grab.html",
+      controller: 'grabCtrl',
     })
     // .state('state1.list', {
     //   url: "/list",

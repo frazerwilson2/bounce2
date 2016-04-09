@@ -6,13 +6,13 @@ $scope.startSwitch = function() {
 }
 
 $scope.joinFunc = function(name) {
-// checkForPlayer
+  newName = name.toLowerCase();
+  var refinedName = newName.replace(/[^\w\s]/gi, '')
 checkplayer = BounceService.checkForPlayer(name);
 checkplayer.then(function successCallback(response) {
-    console.log(response.data);
     if(response.data.name){
         localStorage.setItem('user', name);
-        $state.go('play');
+        $state.go('play', {'check':true});
     }
     else {
       $state.go('join');
@@ -31,7 +31,9 @@ $scope.playername = data;
 
 // newPlayer
 $scope.newJoinFunc = function(name) {
-newplayer = BounceService.newPlayer(name);
+  newName = name.toLowerCase();
+  var refinedName = newName.replace(/[^\w\s]/gi, '')
+newplayer = BounceService.newPlayer(newName);
 newplayer.then(function successCallback(response) {
     console.log(response.data);
         localStorage.setItem('user', name);

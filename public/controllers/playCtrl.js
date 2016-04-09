@@ -1,63 +1,63 @@
-app.controller('playCtrl', function($scope, $rootScope, $http, BounceService, $state) {
+app.controller('playCtrl', function($scope, $rootScope, $http, BounceService, $state, $timeout, $stateParams) {
 
 $scope.player = localStorage.getItem('user');
-getDetail();
+
+if(!$scope.player) {
+  $state.go('index');
+}
+else {
+  getDetail();
+}
+
 function getDetail() {
-// checkForPlayer
+// get player detail (are they ball owner?)
 checkplayer = BounceService.checkForPlayer($scope.player);
 checkplayer.then(function successCallback(response) {
     $scope.currentUser = response.data;
+      if($scope.currentUser.hasBall){       
+        $timeout(function() {
+         console.log('you'); 
+         getDetail();   
+        }, 10000);
+      }
   }, function errorCallback(response) {
     console.log(response);
   });
 }
 
-// ballData
-getBallData();
-function getBallData() {
-ballfunc = BounceService.ballData();
-ballfunc.then(function successCallback(response) {
-    var latest = response.data.length;
-    $scope.ballOwner = response.data[latest - 1];
-    //console.log(response.data[latest - 1]);
-    timeSince();
-  }, function errorCallback(response) {
-    console.log(response);
-  });
-}
-
-// getBall
-$scope.getBall = function() {
-  gitit = BounceService.getBall($scope.currentUser._id, $scope.currentUser.name, $scope.loc.lat, $scope.loc.lon);
-  gitit.then(function successCallback(response) {
-    getDetail();
-    getBallData();
-  }, function errorCallback(response) {
-  });
-}
-
-  $rootScope.$emit('loading', false);
+// Get the location functions
+ $rootScope.$emit('loading', false);
  $scope.getLocation = function() {
   $rootScope.$emit('loading', true);
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
-        console.log($scope.loc);
     } else {
         $scope.loc = "Geolocation is not supported by this browser.";
         $scope.$apply();
         $rootScope.$emit('loading', false);
     }
-}
-function showPosition(position) {
+ }
+ function showPosition(position) {
     $scope.loc = {"lat": position.coords.latitude,"lon": position.coords.longitude};
     $rootScope.$emit('loading', false);
     $scope.$apply();
     $scope.distance = distance($scope.loc.lon, $scope.loc.lat, $scope.ballOwner.loc.lon, $scope.ballOwner.loc.lat);
     $scope.$apply();
-}
+    // The distance in meters user must be to grab
+    $scope.range = 15;
+    // redirect non ball owner if close enough!!
+    if(!$scope.currentUser.hasBall){
+      if($scope.distance < $scope.range) {
+      // go to grab page
+      var grabData = [$scope.currentUser._id, $scope.currentUser.name, $scope.loc.lat, $scope.loc.lon];
+      $state.go('grab', {'grabdata':grabData});
+      }
+    }
+    else {
+      // too far
+    }
+ }
 
-$scope.getLocation();
-$scope.range = 15;
 
 function showError(error) {
     switch(error.code) {
@@ -84,6 +84,26 @@ function showError(error) {
     }
 }
 
+// do loc search if param true
+if($stateParams.check == true && $scope.player) {
+    $scope.getLocation();
+}
+
+// ballData
+getBallData();
+function getBallData() {
+ballfunc = BounceService.ballData();
+ballfunc.then(function successCallback(response) {
+    $scope.ballOwner = response.data;
+    timeSince();
+    $timeout(function() {
+     getBallData();   
+    }, 10000);
+  }, function errorCallback(response) {
+    console.log(response);
+  });
+}
+
 // bounceBall
 $scope.bounceBall = function() {
   $scope.getLocation();
@@ -96,6 +116,8 @@ $scope.bounceBall = function() {
   });
 }
 
+
+// calc distance from ball
 function distance(lon1, lat1, lon2, lat2) {
   var R = 6371; // Radius of the earth in km
   var dLat = (lat2-lat1).toRad();  // Javascript functions in radians
@@ -115,30 +137,57 @@ if (typeof(Number.prototype.toRad) === "undefined") {
   }
 }
 
+// calculate streak
 function timeSince() {
-var _initial = '2016-01-21T10:17:28.593Z';
-var fromTime = new Date(_initial);
 var fromTime = new Date($scope.ballOwner.taketime);
 var toTime = new Date();
 
 var differenceTravel = toTime.getTime() - fromTime.getTime();
 var seconds = Math.floor((differenceTravel) / (1000));
 
- function secondsToString(seconds)
-{
-$scope.streak = [];
-$scope.streak.push(Math.floor(seconds / 31536000));
-$scope.streak.push(Math.floor((seconds % 31536000) / 86400)); 
-$scope.streak.push(Math.floor(((seconds % 31536000) % 86400) / 3600));
-$scope.streak.push(Math.floor((((seconds % 31536000) % 86400) % 3600) / 60));
-$scope.streak.push((((seconds % 31536000) % 86400) % 3600) % 60);
-//return numyears + " years " +  numdays + " days " + numhours + " hours " + numminutes + " minutes " + numseconds + " seconds";
-//console.log($scope.streak);
+ function secondsToString(seconds) {
+  $scope.streak = [];
+  $scope.streak.push(Math.floor(seconds / 31536000));
+  $scope.streak.push(Math.floor((seconds % 31536000) / 86400)); 
+  $scope.streak.push(Math.floor(((seconds % 31536000) % 86400) / 3600));
+  $scope.streak.push(Math.floor((((seconds % 31536000) % 86400) % 3600) / 60));
+  $scope.streak.push((((seconds % 31536000) % 86400) % 3600) % 60);
 }
-//console.log(fromTime);
-//console.log(toTime);
-//console.log(secondsToString(seconds));
-$scope.timeStreak = secondsToString(seconds);
+  $scope.timeStreak = secondsToString(seconds);
 }
 
+
+// password func
+$scope.passBlock = [0,1,0,0,0,0,0,0,0];
+$scope.switchThis = function(x) {
+if($scope.passBlock[x]){
+  $scope.passBlock[x] = 0;
+}
+else {
+  $scope.passBlock[x] = 1;
+}
+};
+
 });
+
+app.directive('highlighter', ['$timeout', function($timeout) {
+  return {
+    restrict: 'A',
+    scope: {
+      model: '=highlighter'
+    },
+    link: function(scope, element) {
+      scope.$watch('model', function (nv, ov) {
+        if (nv !== ov) {
+          // apply class
+          element.addClass('highlight');
+
+          // auto remove after some delay
+          $timeout(function () {
+            element.removeClass('highlight');
+          }, 1000);
+        }
+      });
+    }
+  };
+}]);

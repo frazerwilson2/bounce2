@@ -4,13 +4,16 @@ html, body, .container {
 
 body {
   margin: 0;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
   background: #182833;
   color: #7CCDFF; }
 
 .inverse {
   background: #7CCDFF;
   color: #182833; }
+  .inverse h2 {
+    color: #182833; }
 
 button, input[type='text'] {
   background: #fff;
@@ -24,6 +27,15 @@ a {
 
 .inline {
   display: inline-block; }
+
+h2 {
+  -webkit-transition: all 200ms;
+  transition: all 200ms; }
+
+.highlight h2 {
+  color: lightgreen;
+  font-size: 2.5rem;
+  transition: all 200ms; }
 
 .logo {
   padding: 5% 0; }
@@ -196,6 +208,9 @@ a {
 h1, h2, h3, h4, h5, h6 {
   color: #7CCDFF; }
 
+.btn {
+  font-size: 2rem; }
+
 .col-sm-3 {
   width: 25%;
   display: inline-block;
@@ -211,3 +226,11 @@ hr {
   width: 100%;
   left: 0;
   bottom: 0; }
+
+.passControl {
+  width: 160px; }
+  .passControl .passBox {
+    width: 50px;
+    height: 50px;
+    border: 1px red solid;
+    display: inline-block; }
