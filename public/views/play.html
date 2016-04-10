@@ -1,12 +1,10 @@
-
-<!--{So you're {{player}}
-{currentUser}}-->
 <div>
 	<h2 class="p-t-1">Ball owner is</h2>
 <div class="well p-t-1 p-b-1 inverse">
-<h2 ng-hide="currentUser.hasBall">{{ballOwner.owner}}</h2>	
-<h2 ng-show="currentUser.hasBall">You</h2>
+<h2 ng-hide="currentUser.name == ballOwner.owner">{{ballOwner.owner}}</h2>	
+<h2 ng-show="currentUser.name == ballOwner.owner">You</h2>
 </div>
+
 <!--<p>since {{ballOwner.taketime | date:'dd MMM HH:mm:ss a'}}</p>-->
 
 <div class="row p-t-1" highlighter="streak">
@@ -18,38 +16,24 @@
 </div>
 <hr/>
 
-<div ng-hide="currentUser.hasBall">
+<div ng-hide="currentUser.name == ballOwner.owner">
 <h2 ng-show="distance">You are <strong>{{distance | number:0}}m</strong> away</h2>
-
 <div ng-show="distance > range">Too far to grab!
-<a ng-click="getLocation()" class="btn btn-default m-l-1"><i class="fa fa-refresh"></i></a>
 </div>
 
+<a ng-click="getLocation()" class="btn btn-default m-l-1">Update Location <i class="fa fa-refresh"></i></a>
 <div ng-hide="loading">
 <p ng-bind="loc" ng-hide="loc.lat"></p>
-<a ng-hide="loc.lat" ng-click="getLocation()" class="btn btn-default">Try again</a>
+<!-- <a ng-hide="loc.lat" ng-click="getLocation()" class="btn btn-default">Try again</a> -->
 </div>
 </div>
 
-<!-- <div class="passControl">
-<a class="passBox" ng-click="switchThis(0)" ng-class="({'inverse':passBlock[0]})">{{passBlock[0]}}</a>
-<a class="passBox" ng-click="switchThis(1)" ng-class="({'inverse':passBlock[1]})">{{passBlock[1]}}</a>
-<a class="passBox" ng-click="switchThis(2)" ng-class="({'inverse':passBlock[2]})">{{passBlock[2]}}</a>
-<a class="passBox" ng-click="switchThis(3)" ng-class="({'inverse':passBlock[3]})">{{passBlock[3]}}</a>
-<a class="passBox" ng-click="switchThis(4)" ng-class="({'inverse':passBlock[4]})">{{passBlock[4]}}</a>
-<a class="passBox" ng-click="switchThis(5)" ng-class="({'inverse':passBlock[5]})">{{passBlock[5]}}</a>
-<a class="passBox" ng-click="switchThis(6)" ng-class="({'inverse':passBlock[6]})">{{passBlock[6]}}</a>
-<a class="passBox" ng-click="switchThis(7)" ng-class="({'inverse':passBlock[7]})">{{passBlock[7]}}</a>
-<a class="passBox" ng-click="switchThis(8)" ng-class="({'inverse':passBlock[8]})">{{passBlock[8]}}</a>
-</div> 
-
-<hr/>
-{{passBlock}}-->
-<div ng-show="currentUser.hasBall">
+<div ng-show="currentUser.name == ballOwner.owner">
 	<div class="logo">
 	<div class="ball"></div>
 	<span class="shadow"></span>
 	</div>
+	<a ng-hide="currentUser.pass" ui-sref="pass({'id':currentUser._id, 'set':true})">add password</a>
 <button class="btn btn-default" ng-click="bounceBall()">Bounce</a>
 </div>
 

@@ -23,6 +23,21 @@ app.service("BounceService", function ($http) {
       });
    }
 
+   // /putPass/:player_id/:player_pass
+   this.makePass = function(id, pass) {
+     return $http({
+        method: 'POST',
+        url: '/api/putPass/' + id + '/' + pass
+      });
+   }
+
+   this.matchPass = function(id, pass) {
+     return $http({
+        method: 'GET',
+        url: '/api/putPass/' + id + '/' + pass
+      });
+   }
+
    this.getBall = function(id, name, lat, lon) {
     // /getball/:player_id
     return $http({

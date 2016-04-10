@@ -1,18 +1,14 @@
 app.controller('indexCtrl', function($scope, $rootScope, $http, BounceService, $state) {
 
-$scope.start = true;
-$scope.startSwitch = function() {
-  $scope.start = !$scope.start;
-}
-
 $scope.joinFunc = function(name) {
   newName = name.toLowerCase();
   var refinedName = newName.replace(/[^\w\s]/gi, '')
-checkplayer = BounceService.checkForPlayer(name);
+checkplayer = BounceService.checkForPlayer(refinedName);
 checkplayer.then(function successCallback(response) {
+    //console.log(response);
     if(response.data.name){
-        localStorage.setItem('user', name);
-        $state.go('play', {'check':true});
+        localStorage.setItem('user', refinedName);
+        $state.go('play', {'check':true, 'match':true});
     }
     else {
       $state.go('join');
@@ -33,10 +29,10 @@ $scope.playername = data;
 $scope.newJoinFunc = function(name) {
   newName = name.toLowerCase();
   var refinedName = newName.replace(/[^\w\s]/gi, '')
-newplayer = BounceService.newPlayer(newName);
+newplayer = BounceService.newPlayer(refinedName);
 newplayer.then(function successCallback(response) {
     console.log(response.data);
-        localStorage.setItem('user', name);
+        localStorage.setItem('user', refinedName);
         $state.go('play');
   }, function errorCallback(response) {
     console.log(response);
@@ -63,16 +59,4 @@ $rootScope.$on('loading', function(evt, data) {
 $scope.loading = data;
 });
 
-getThePlayers();
-function getThePlayers() {
-playersfunc = BounceService.getPlayers();
-playersfunc.then(function successCallback(response) {
-    $scope.players = response.data;
-  }, function errorCallback(response) {
-    // called asynchronously if an error occurs
-    // or server returns response with an error status.
-    //console.log(response);
-  });
-}
-
-  });
+});

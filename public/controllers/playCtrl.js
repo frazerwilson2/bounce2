@@ -9,17 +9,25 @@ else {
   getDetail();
 }
 
+if($stateParams.valid) {
+$scope.valid = true;
+};
+
 function getDetail() {
 // get player detail (are they ball owner?)
 checkplayer = BounceService.checkForPlayer($scope.player);
 checkplayer.then(function successCallback(response) {
+  if(response.data.pass) {
+    if(!$stateParams.valid && !$scope.valid){
+    $state.go('pass', {'id':response.data._id, 'match':true});
+    }
+  }
     $scope.currentUser = response.data;
-      if($scope.currentUser.hasBall){       
-        $timeout(function() {
-         console.log('you'); 
-         getDetail();   
-        }, 10000);
-      }
+      // if($scope.currentUser.hasBall){       
+      //   $timeout(function() { 
+      //    getDetail();   
+      //   }, 10000);
+      // }
   }, function errorCallback(response) {
     console.log(response);
   });
@@ -46,7 +54,7 @@ checkplayer.then(function successCallback(response) {
     // The distance in meters user must be to grab
     $scope.range = 15;
     // redirect non ball owner if close enough!!
-    if(!$scope.currentUser.hasBall){
+    if($scope.currentUser.name != $scope.ballOwner.owner){
       if($scope.distance < $scope.range) {
       // go to grab page
       var grabData = [$scope.currentUser._id, $scope.currentUser.name, $scope.loc.lat, $scope.loc.lon];
@@ -60,6 +68,7 @@ checkplayer.then(function successCallback(response) {
 
 
 function showError(error) {
+  console.log(error.code);
     switch(error.code) {
         case error.PERMISSION_DENIED:
             $scope.loc = "User denied the request for Geolocation."
@@ -85,7 +94,7 @@ function showError(error) {
 }
 
 // do loc search if param true
-if($stateParams.check == true && $scope.player) {
+if($scope.player) {
     $scope.getLocation();
 }
 
@@ -155,18 +164,6 @@ var seconds = Math.floor((differenceTravel) / (1000));
 }
   $scope.timeStreak = secondsToString(seconds);
 }
-
-
-// password func
-$scope.passBlock = [0,1,0,0,0,0,0,0,0];
-$scope.switchThis = function(x) {
-if($scope.passBlock[x]){
-  $scope.passBlock[x] = 0;
-}
-else {
-  $scope.passBlock[x] = 1;
-}
-};
 
 });
 

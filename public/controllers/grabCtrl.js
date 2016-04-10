@@ -11,12 +11,12 @@ $scope.getBall = function() {
 	ballfunc.then(function successCallback(response) {
 	    ballOwner = response.data.owner;
 		if(player == ballOwner) {
-			$state.go('play', {'check':false});
+			$state.go('play', {'check':true, 'valid':true});
 		}
 		else {
 		  gitit = BounceService.getBall(grabdata[0], grabdata[1], grabdata[2], grabdata[3]);
 		  gitit.then(function successCallback(response) {
-		    $state.go('play', {'check':false});
+		    $state.go('play', {'check':false, 'valid':true});
 		  }, function errorCallback(response) {
 		  });
 		}

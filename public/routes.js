@@ -19,12 +19,14 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     })
     .state('players', {
         url: "/players",
-        templateUrl: "views/players.html"
+        templateUrl: "views/players.html",
+        controller: 'playersCtrl',
     })
     .state('play', {
       url: "/play",
       params: {
         check: true,
+        valid:null
       },
       templateUrl: "views/play.html",
       controller: 'playCtrl',
@@ -36,6 +38,16 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
       },
       templateUrl: "views/grab.html",
       controller: 'grabCtrl',
+    })
+    .state('pass', {
+      url: "/pass",
+      params: {
+        id:null,
+        set:null,
+        match:null,
+      },
+      templateUrl: "views/password.html",
+      controller: 'passCtrl',
     })
     // .state('state1.list', {
     //   url: "/list",

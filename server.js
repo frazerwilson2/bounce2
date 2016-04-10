@@ -76,12 +76,12 @@ router.route('/players')
  
     // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
     .get(function(req, res) {
+        console.log(req.params.player_name);
         Player.findOne({name: req.params.player_name}, function(err, data) {
             
             if (err) return console.error(err);
-            //console.log(data.name);
+            // console.log(data);
             if(data){
-                data.newUser = req.params.new_user;
                 res.json(data);
             }
             else {
@@ -104,6 +104,35 @@ router.route('/players')
         });       
     });
 
+    router.route('/putPass/:player_id/:player_pass')
+    .post(function(req, res) {
+        // update ball pos
+        id = req.params.player_id;
+        pass = req.params.player_pass;
+        Player.update({ _id: id }, { pass: pass }, { multi: false }, function (err, raw) {
+          if (err) return handleError(err);
+          res.json(raw);
+        });
+     })
+
+    .get(function(req, res) {
+        // update ball pos
+        id = req.params.player_id;
+        pass = req.params.player_pass;
+        Player.findOne({ _id: id }, { pass: pass }, { multi: false }, function (err, raw) {
+          if (err) return handleError(err);
+          console.log(raw);
+          thePass = raw.pass;
+          if(pass == thePass) {
+            res.json(true);
+          }
+          else {
+            res.json(false);
+          }
+        });
+     });
+
+    // BALL methods
     router.route('/getball')
     .get(function(req, res) {
         Ball.findOne({}, {}, { sort: { 'taketime' : -1 } }, function(err, ball) {

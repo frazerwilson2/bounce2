@@ -37,6 +37,18 @@ h2 {
   font-size: 2.5rem;
   transition: all 200ms; }
 
+.passControl {
+  width: 250px;
+  margin: auto; }
+  .passControl .passBox {
+    width: 80px;
+    height: 80px;
+    border: 2px #7CCDFF solid;
+    display: inline-block; }
+
+.errortext {
+  color: red; }
+
 .logo {
   padding: 5% 0; }
 
@@ -226,11 +238,3 @@ hr {
   width: 100%;
   left: 0;
   bottom: 0; }
-
-.passControl {
-  width: 160px; }
-  .passControl .passBox {
-    width: 50px;
-    height: 50px;
-    border: 1px red solid;
-    display: inline-block; }
