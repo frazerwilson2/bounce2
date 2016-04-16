@@ -26,16 +26,23 @@ $scope.playername = data;
   });
 
 // newPlayer
+$scope.loading = false;
 $scope.newJoinFunc = function(name) {
+  if($scope.loading) {
+    return;
+  }
+  $scope.loading = true;
   newName = name.toLowerCase();
   var refinedName = newName.replace(/[^\w\s]/gi, '')
 newplayer = BounceService.newPlayer(refinedName);
 newplayer.then(function successCallback(response) {
     console.log(response.data);
         localStorage.setItem('user', refinedName);
+        $scope.loading = false;
         $state.go('play');
   }, function errorCallback(response) {
     console.log(response);
+    $scope.loading = false;
   });
 }
 
