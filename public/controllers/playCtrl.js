@@ -47,9 +47,12 @@ checkplayer.then(function successCallback(response) {
  }
  function showPosition(position) {
     $scope.loc = {"lat": position.coords.latitude,"lon": position.coords.longitude};
+    $scope.mapSrc = "http://maps.googleapis.com/maps/api/staticmap?center="
+    +$scope.ballOwner.loc.lat+","+$scope.ballOwner.loc.lon+"&zoom=14&size=400x300&sensor=false&markers=color:blue%7Clabel:S";
     $rootScope.$emit('loading', false);
     $scope.$apply();
     $scope.distance = distance($scope.loc.lon, $scope.loc.lat, $scope.ballOwner.loc.lon, $scope.ballOwner.loc.lat);
+
     $scope.$apply();
     // The distance in meters user must be to grab
     $scope.range = 15;
@@ -66,6 +69,7 @@ checkplayer.then(function successCallback(response) {
     }
  }
 
+$scope.mapSrc = "";
 
 function showError(error) {
   console.log(error.code);

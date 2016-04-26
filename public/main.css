@@ -49,6 +49,9 @@ h2 {
 .errortext {
   color: red; }
 
+.map {
+  width: 100%; }
+
 .logo {
   padding: 5% 0; }
 

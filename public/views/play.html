@@ -26,6 +26,8 @@
 <p ng-bind="loc" ng-hide="loc.lat"></p>
 <!-- <a ng-hide="loc.lat" ng-click="getLocation()" class="btn btn-default">Try again</a> -->
 </div>
+
+<img ng-src="{{mapSrc}}" class="map p-t-1">
 </div>
 
 <div ng-show="currentUser.name == ballOwner.owner">
