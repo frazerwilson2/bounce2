@@ -5,50 +5,55 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
   //
   // Now set up the states
   $stateProvider
-    .state('index', {
+    .state('spa', {
         url: "/index",
-        templateUrl: "views/home.html"
+        templateUrl: "views/spa.html",
+        controller: 'spaCtrl',
     })
-    .state('login', {
-        url: "/login",
-        templateUrl: "views/login.html"
-    })
-    .state('join', {
-        url: "/join",
-        templateUrl: "views/join.html"
-    })
-    .state('players', {
-        url: "/players",
-        templateUrl: "views/players.html",
-        controller: 'playersCtrl',
-    })
-    .state('play', {
-      url: "/play",
-      params: {
-        check: true,
-        valid:null
-      },
-      templateUrl: "views/play.html",
-      controller: 'playCtrl',
-    })
-    .state('grab', {
-      url: "/grab",
-      params: {
-        grabdata:null,
-      },
-      templateUrl: "views/grab.html",
-      controller: 'grabCtrl',
-    })
-    .state('pass', {
-      url: "/pass",
-      params: {
-        id:null,
-        set:null,
-        match:null,
-      },
-      templateUrl: "views/password.html",
-      controller: 'passCtrl',
-    })
+    // .state('index', {
+    //     url: "/index",
+    //     templateUrl: "views/home.html"
+    // })
+    // .state('login', {
+    //     url: "/login",
+    //     templateUrl: "views/login.html"
+    // })
+    // .state('join', {
+    //     url: "/join",
+    //     templateUrl: "views/join.html"
+    // })
+    // .state('players', {
+    //     url: "/players",
+    //     templateUrl: "views/players.html",
+    //     controller: 'playersCtrl',
+    // })
+    // .state('play', {
+    //   url: "/play",
+    //   params: {
+    //     check: true,
+    //     valid:null
+    //   },
+    //   templateUrl: "views/play.html",
+    //   controller: 'playCtrl',
+    // })
+    // .state('grab', {
+    //   url: "/grab",
+    //   params: {
+    //     grabdata:null,
+    //   },
+    //   templateUrl: "views/grab.html",
+    //   controller: 'grabCtrl',
+    // })
+    // .state('pass', {
+    //   url: "/pass",
+    //   params: {
+    //     id:null,
+    //     set:null,
+    //     match:null,
+    //   },
+    //   templateUrl: "views/password.html",
+    //   controller: 'passCtrl',
+    // })
     // .state('state1.list', {
     //   url: "/list",
     //   templateUrl: "partials/state1.list.html",

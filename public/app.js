@@ -1,11 +1,11 @@
-var app = angular.module('bounceApp', ['ui.router', 'ngAnimate']);
+var app = angular.module('bounceApp', ['ui.router']);
 
 app.run(function($rootScope, $urlRouter, $state) {
     $rootScope.$on('$locationChangeSuccess', function(evt) {
-      var checkuser = localStorage.getItem('user');
-      if(checkuser){
-        $rootScope.$emit('logged', checkuser);
-      }
+      // var checkuser = localStorage.getItem('user');
+      // if(checkuser){
+      //   $rootScope.$emit('logged', checkuser);
+      // }
       // if(!checkuser) {
       //   $state.go('index');
       // }

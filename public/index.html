@@ -3,39 +3,98 @@
 <head>
   <title>Who got the ball</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"> 
-  <link href='https://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"> 
-  <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css"> 
-  <link rel="stylesheet" href="font-awesome.min.css">   
-
-  <link href='https://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="main.css">
-  <link rel="stylesheet" href="animate.css"> 
+  <style>
+     html,body,#map {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+     }
+  </style>
 </head>
-<body ng-app="bounceApp" ng-controller="indexCtrl" ng-class="({'loading':loading})">    
-
-<div class="container">
-	<div class="row">
-		<div class="col-sm-12">
-      		<div ui-view></div>     
-      	</div>
-  </div>     
-</div>
+<body>    
+<div id="map"></div>
 <script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="bootstrap/js/respond.min.js"></script>
-<script src="bootstrap/js/modernizr-2.6.2.min.js"></script>
+<script>
+var ballpos;
+function getBall(){
+  $.ajax({
+    url: '/api/getball',
+    success: function(success){
+      ballpos = {lat: success.loc.lat, lng: success.loc.lon};
+      console.log(ballpos);
+    },
+    dataType: 'json'
+  });
+}
+getBall();
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-<script type="text/javascript" src="https://code.angularjs.org/1.4.5/angular-animate.min.js"></script>
-<script type="text/javascript" src="ui-router.js"></script>
-<script src="app.js"></script>
-<script src="controllers/indexCtrl.js"></script>
-<script src="controllers/playCtrl.js"></script>
-<script src="controllers/playersCtrl.js"></script>
-<script src="controllers/grabCtrl.js"></script>
-<script src="controllers/passCtrl.js"></script>
-<script type="text/javascript" src="routes.js"></script>
-<script src="service.js"></script>
+// calc distance from ball
+function distance(lon1, lat1, lon2, lat2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = (lat2-lat1).toRad();  // Javascript functions in radians
+  var dLon = (lon2-lon1).toRad(); 
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c * 1000; // Distance in km
+  console.clear();
+  return numberWithCommas(Math.round(d)) + ' M';
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/** Converts numeric degrees to radians */
+if (typeof(Number.prototype.toRad) === "undefined") {
+  Number.prototype.toRad = function() {
+    return this * Math.PI / 180;
+  }
+}
+
+      function initMap() {
+        var uluru = {lat: 41.77131167976406, lng: -1.40625};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 2,
+          center: uluru
+        });
+        var gmarkers = [];
+        // var marker = new google.maps.Marker({
+        //   position: uluru,
+        //   map: map
+        // });
+        map.addListener('click', function(event) {
+          var pos = {lat: event.latLng.lat(), lng: event.latLng.lng()};
+          console.log(pos);
+          console.log(distance(event.latLng.lng(), event.latLng.lat(), ballpos.lng, ballpos.lat));
+          (function removeMarkers(){
+              for(i=0; i<gmarkers.length; i++){
+                  gmarkers[i].setMap(null);
+              }
+          })();
+          var marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            icon: 'rocket.png',
+            title: 'Uluru (Ayers Rock)'
+          });
+          gmarkers.push(marker);
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+          
+          infowindow.open(map, marker);
+          
+        });
+        var contentString = '<div id="content">HERE</div>';
+
+
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7THAM_DeLXEtDp6nX2NlxBtLcTd0Bx4E&callback=initMap">
+    </script>
 </body>
 </html>
