@@ -42,6 +42,15 @@ module.exports = function(grunt) {
             ext: '.min.css'
           }]
         }
+      },
+      watch: {
+        scripts: {
+          files: ['src/main.scss','src/ball_raw.js'],
+          tasks: ['sass','babel','uglify'],
+          options: {
+            spawn: false,
+          },
+        },
       }
   });
 

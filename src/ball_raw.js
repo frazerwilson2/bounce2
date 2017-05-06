@@ -1,3 +1,5 @@
+var socket = io();
+
 var ballpos;
 function getBall(){
   $.ajax({
@@ -49,6 +51,7 @@ if (typeof(Number.prototype.toRad) === "undefined") {
         // });
         map.addListener('click', function(event) {
           var pos = {lat: event.latLng.lat(), lng: event.latLng.lng()};
+          socket.emit('chat message', 'click at ' + pos.lat + ", " + pos.lng);
           console.log(pos);
           console.log(distance(event.latLng.lng(), event.latLng.lat(), ballpos.lng, ballpos.lat));
           (function removeMarkers(){
@@ -72,5 +75,8 @@ if (typeof(Number.prototype.toRad) === "undefined") {
         });
         var contentString = '<div id="content">HERE</div>';
 
-
       }
+
+      socket.on('chat message', function(msg){
+        console.log(msg);
+      });
