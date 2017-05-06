@@ -1,3 +1,3 @@
-# Bounce 
+# Ball
 Who has the ball?
-First MEAN stack project, get close enough to the ball to grab it, then keep others from taking it back!.
+Currently back in dev. Originating from the infamous app ideas lab from DevMeetDesign meetup, the ball is a location based chase game. Find the ball, grab it, then hold onto it before someone takes it from you.
