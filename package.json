@@ -29,6 +29,7 @@
   "author": "FW",
   "license": "ISC",
   "devDependencies": {
+    "babel-preset-env": "^1.4.0",
     "grunt-babel": "^6.0.0",
     "grunt-contrib-cssmin": "^2.1.0",
     "grunt-contrib-watch": "^1.0.0",

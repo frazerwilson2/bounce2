@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var socket = io();
 
@@ -6,15 +6,6 @@ var ballpos;
 var getBall = '/api/getball';
 
 var getBallFunc = function getBallFunc() {
-  // $.ajax({
-  //   url: '/api/getball',
-  //   success: function(success){
-  //     ballpos = {lat: success.loc.lat, lng: success.loc.lon};
-  //     console.log(ballpos);
-  //   },
-  //   dataType: 'json'
-  // });
-
   fetch(getBall).then(function (blob) {
     return blob.json();
   }).then(function (data) {
@@ -67,7 +58,7 @@ function initMap() {
     console.log(pos);
     console.log(distance(event.latLng.lng(), event.latLng.lat(), ballpos.lng, ballpos.lat));
     function removeMarkers() {
-      for (i = 0; i < gmarkers.length; i++) {
+      for (var i = 0; i < gmarkers.length; i++) {
         gmarkers[i].setMap(null);
       }
     };
@@ -86,12 +77,20 @@ function initMap() {
     infowindow.open(map, marker);
   });
   var contentString = '<div id="content">HERE</div>';
+
+  addClass($("#map"), 'working'); //fetch the element with the id ‘someid’
 }
 
 // mimick jquery
-// function $(selector) { return document.querySelector(selector);  }
-// function $$(selector) { return document.querySelectorAll(selector); }
-// $("#someid"); //fetch the element with the id ‘someid’
+function $(selector) {
+  return document.querySelector(selector);
+};
+function $$(selector) {
+  return document.querySelectorAll(selector);
+};
+function addClass(el, cl) {
+  el.classList.add(cl);
+};
 
 socket.on('chat message', function (msg) {
   console.log(msg);

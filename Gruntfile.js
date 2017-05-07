@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         },
         dist: {
           files: {
-            "src/ball.js": "src/ball_raw.js"
+            "public/build/ball.js": "src/ball_raw.js"
           }
         }
       },
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'src/ball.js',
+        src: 'public/build/ball.js',
         dest: 'public/build/ball.min.js'
       }
     },
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
       watch: {
         scripts: {
           files: ['src/main.scss','src/ball_raw.js'],
-          tasks: ['sass','babel','uglify'],
+          tasks: ['sass','babel'],
           options: {
             spawn: false,
           },
@@ -61,5 +61,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
 
   // Default task(s).
-  grunt.registerTask('default', ['babel','uglify','sass','cssmin']);
+  grunt.registerTask('default', ['babel','sass','cssmin']);
 };

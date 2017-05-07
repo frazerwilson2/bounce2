@@ -1,17 +1,21 @@
+"use strict";
 var socket = io();
 
 var ballpos;
-function getBall(){
-  $.ajax({
-    url: '/api/getball',
-    success: function(success){
-      ballpos = {lat: success.loc.lat, lng: success.loc.lon};
-      console.log(ballpos);
-    },
-    dataType: 'json'
+var getBall = '/api/getball';
+
+var getBallFunc = function(){
+  fetch(getBall)
+  .then(blob => blob.json())
+  .then(function(data){
+    ballpos = {
+      lat: data.loc.lat, 
+      lng: data.loc.lon
+    }
+   console.log(ballpos);
   });
-}
-getBall();
+};
+getBallFunc();
 
 // calc distance from ball
 function distance(lon1, lat1, lon2, lat2) {
@@ -38,6 +42,7 @@ if (typeof(Number.prototype.toRad) === "undefined") {
   }
 }
 
+
       function initMap() {
         var uluru = {lat: 41.77131167976406, lng: -1.40625};
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -54,11 +59,12 @@ if (typeof(Number.prototype.toRad) === "undefined") {
           socket.emit('chat message', 'click at ' + pos.lat + ", " + pos.lng);
           console.log(pos);
           console.log(distance(event.latLng.lng(), event.latLng.lat(), ballpos.lng, ballpos.lat));
-          (function removeMarkers(){
-              for(i=0; i<gmarkers.length; i++){
-                  gmarkers[i].setMap(null);
-              }
-          })();
+        function removeMarkers(){
+            for(var i=0; i<gmarkers.length; i++){
+                gmarkers[i].setMap(null);
+            }
+        };
+          removeMarkers();
           var marker = new google.maps.Marker({
             position: pos,
             map: map,
@@ -75,7 +81,16 @@ if (typeof(Number.prototype.toRad) === "undefined") {
         });
         var contentString = '<div id="content">HERE</div>';
 
+      addClass($("#map"), 'working'); //fetch the element with the id ‘someid’
+
       }
+
+      // mimick jquery
+      function $(selector) { return document.querySelector(selector)  };
+      function $$(selector) { return document.querySelectorAll(selector) };
+      function addClass(el, cl){
+        el.classList.add(cl);
+      };
 
       socket.on('chat message', function(msg){
         console.log(msg);
