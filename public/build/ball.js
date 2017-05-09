@@ -27,7 +27,7 @@ function distance(lon1, lat1, lon2, lat2) {
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c * 1000; // Distance in km
   console.clear();
-  return numberWithCommas(Math.round(d)) + ' M';
+  return Math.round(d);
 }
 
 function numberWithCommas(x) {
@@ -52,16 +52,19 @@ function initMap() {
   //   position: uluru,
   //   map: map
   // });
+  var removeMarkers = function removeMarkers() {
+    for (var i = 0; i < gmarkers.length; i++) {
+      gmarkers[i].setMap(null);
+    }
+    lookForBall();
+  };
   map.addListener('click', function (event) {
     var pos = { lat: event.latLng.lat(), lng: event.latLng.lng() };
     socket.emit('chat message', 'click at ' + pos.lat + ", " + pos.lng);
     console.log(pos);
-    console.log(distance(event.latLng.lng(), event.latLng.lat(), ballpos.lng, ballpos.lat));
-    function removeMarkers() {
-      for (var i = 0; i < gmarkers.length; i++) {
-        gmarkers[i].setMap(null);
-      }
-    };
+    var ballDistance = distance(event.latLng.lng(), event.latLng.lat(), ballpos.lng, ballpos.lat);
+    console.log(ballDistance);
+
     removeMarkers();
     var marker = new google.maps.Marker({
       position: pos,
@@ -71,7 +74,7 @@ function initMap() {
     });
     gmarkers.push(marker);
     var infowindow = new google.maps.InfoWindow({
-      content: contentString
+      content: 'ball is ' + numberWithCommas(ballDistance) + 'M from here'
     });
 
     infowindow.open(map, marker);
@@ -79,6 +82,31 @@ function initMap() {
   var contentString = '<div id="content">HERE</div>';
 
   addClass($("#map"), 'working'); //fetch the element with the id ‘someid’
+
+  map.addListener('dragend', function (event) {
+    lookForBall();
+  });
+  map.addListener('zoom_changed', function (event) {
+    lookForBall();
+  });
+  var lookForBall = function lookForBall() {
+    console.log('look for ball');
+    var z = map.getZoom();
+    var cLat = map.getCenter().lat();
+    var cLon = map.getCenter().lng();
+    var closeness = distance(cLon, cLat, ballpos.lng, ballpos.lat);
+    console.log(closeness);
+    if (z >= 15 && closeness <= 100) {
+      console.log('close enough');
+      var ballMarker = new google.maps.Marker({
+        position: { lat: ballpos.lat, lng: ballpos.lng },
+        map: map,
+        icon: 'ball.png',
+        title: 'Uluru (Ayers Rock)'
+      });
+      gmarkers.push(ballMarker);
+    };
+  };
 }
 
 // mimick jquery
