@@ -1,8 +1,6 @@
 "use strict";
-//var socket = io();
 
-var thisOrigin = window.location.origin;
-var socket = io.connect(thisOrigin);
+var socket = io();
 
 var ballpos;
 var ownerId;

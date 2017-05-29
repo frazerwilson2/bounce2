@@ -4,15 +4,22 @@
 // =============================================================================
 
 // call the packages we need
-var express    = require('express');        // call express
-var app        = express();                 // define our app using express
+var express = require('express');
+var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+//io.on('connection', function(){ /* … */ });
+
+
+//var express    = require('express');        // call express
+//var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
 
 // var app = require('express')();  
- var myserver = require('http').Server(app);  
- var io = require('socket.io')(myserver);
- myserver.listen(8080);
+ // var myserver = require('http').Server(app);  
+ // var io = require('socket.io')(myserver);
+ // myserver.listen(8080);
 
  io.on('connection', function(socket) {  
     console.log('connection');
@@ -21,6 +28,7 @@ var mongoose   = require('mongoose');
         io.emit('ball change', msg);
     });
 });
+server.listen(3000);
 
 //mongoose.connect('mongodb://localhost/'); // connect to our database
 mongoose.connect('mongodb://frazer:frazer@ds013569.mlab.com:13569/heroku_c741jbjg');
@@ -203,5 +211,5 @@ app.use('/api', router);
 
 // START THE SERVER
 // =============================================================================
-app.listen(port);
+//app.listen(port);
 console.log('Magic happens on port ' + port);
