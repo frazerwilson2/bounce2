@@ -2,13 +2,21 @@
 <html>
 <head>
   <title>Who got the ball?</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="/phonon/css/phonon.min.css"> 
   <link rel="stylesheet" type="text/css" href="build/main.min.css">
 </head>
 <body>    
 
-  <div id="map"></div>
+<home data-page="true">
+  <div><a class="padded-list" href="#!pagetwo">Margherita</a></div>
+  <div id="map" class="content"></div>
+  <div id="ballInfo"></div>
+</home>
 
+<pagetwo data-page="true"></pagetwo>
+
+<script type="text/javascript" src="/phonon/js/phonon.min.js"></script>
 <script src="build/socket.js"></script>
   <script src="build/ball.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7THAM_DeLXEtDp6nX2NlxBtLcTd0Bx4E&callback=initMap"></script>

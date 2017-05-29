@@ -4,3 +4,26 @@
 	margin: 0;
 	padding: 0;
  }
+
+#ballInfo {
+	position: absolute;
+	bottom: 0;
+	height: 60px;
+	background: #11114a;
+	color: white;
+	padding: 1em;
+	width: 100%;
+}
+
+// .grab_screen {	
+// 	display: none;
+// }
+
+//  .ball_select {
+//  	#map {
+//  		display:none;
+//  	}
+//  	.grab_screen {
+//  		display: block;
+//  	}
+//  }

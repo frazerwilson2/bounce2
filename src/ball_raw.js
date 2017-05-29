@@ -2,17 +2,21 @@
 var socket = io();
 
 var ballpos;
+var ownerId;
 var getBall = '/api/getball';
 
 var getBallFunc = function(){
   fetch(getBall)
   .then(blob => blob.json())
   .then(function(data){
+    ownerId = data._id;
+    var ballOwner = data.owner;
+    updateBallOwnerText(ballOwner);
     ballpos = {
       lat: data.loc.lat, 
       lng: data.loc.lon
     }
-   console.log(ballpos);
+   console.log(data);
   });
 };
 getBallFunc();
@@ -40,6 +44,10 @@ if (typeof(Number.prototype.toRad) === "undefined") {
   Number.prototype.toRad = function() {
     return this * Math.PI / 180;
   }
+}
+
+function updateBallOwnerText(name){
+    $('#ballInfo').innerHTML = name + ' has the ball';
 }
 
 
@@ -108,11 +116,67 @@ if (typeof(Number.prototype.toRad) === "undefined") {
                 title: 'Uluru (Ayers Rock)'
               });
               gmarkers.push(ballMarker);
+              ballMarker.addListener('click', function(event) {
+                console.log('take ball');
+//                addClass($('body'), 'ball_select');
+                window.location = '#!pagetwo';
+              });     
             };
       }
 
       }
 
+      phonon.options({
+          navigator: {
+              defaultPage: 'home',
+              animatePages: true,
+              enableBrowserBackButton: true,
+              templateRootDirectory: './tpl'
+          },
+          i18n: null // for this example, we do not use internationalization
+      });
+
+      var app = phonon.navigator();
+
+      /**
+       * The activity scope is not mandatory.
+       * For the home page, we do not need to perform actions during
+       * page events such as onCreate, onReady, etc
+      */
+      app.on({page: 'home', preventClose: false, content: null});
+
+
+      app.on({page: 'pagetwo', preventClose: true, content: 'pagetwo.html', readyDelay: 1}, function(activity) {
+
+          var action = null;
+
+          activity.onCreate(function() {
+            $('#grabBall').addEventListener('click', function(){
+var ballName = $('#ballName').value;
+var ballCode = $('#ballCode').value;
+
+  var request = new Request(getBall + '/' + ownerId + '/' + ballName + '/' + ballpos.lat + '/' + ballpos.lng, {
+    method: 'POST',
+  });
+
+  // Now use it!
+  fetch(request).then(function(res) { 
+    getBallFunc();
+    window.location = '#!home';
+  });
+            
+            });
+
+          });
+
+          activity.onClose(function(self) {
+              self.close();
+          });
+
+      });
+
+      // Let's go!
+      app.start();
 
 
       // mimick jquery
