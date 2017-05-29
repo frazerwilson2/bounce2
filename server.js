@@ -16,9 +16,9 @@ var mongoose   = require('mongoose');
 
  io.on('connection', function(socket) {  
     console.log('connection');
-    socket.on('chat message', function(msg){
-        console.log('message: ' + msg);
-        io.emit('chat message', msg);
+    socket.on('ball change', function(msg){
+        console.log('new owner: ' + msg);
+        io.emit('ball change', msg);
     });
 });
 

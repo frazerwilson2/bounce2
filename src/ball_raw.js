@@ -52,9 +52,9 @@ function updateBallOwnerText(name){
 
 
       function initMap() {
-        var uluru = {lat: 41.77131167976406, lng: -1.40625};
+        var uluru = {lat: 51.541084, lng: -0.1048659};
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 2,
+          zoom: 15,
           center: uluru
         });
         var gmarkers = [];
@@ -70,7 +70,6 @@ function updateBallOwnerText(name){
         };
         map.addListener('click', function(event) {
           var pos = {lat: event.latLng.lat(), lng: event.latLng.lng()};
-          socket.emit('chat message', 'click at ' + pos.lat + ", " + pos.lng);
           console.log(pos);
           var ballDistance = distance(event.latLng.lng(), event.latLng.lat(), ballpos.lng, ballpos.lat);
           console.log(ballDistance);
@@ -138,6 +137,18 @@ function updateBallOwnerText(name){
 
       var app = phonon.navigator();
 
+
+      // global event works
+      document.on('pagecreated', function(evt) {
+        socket.on('ball change', function(msg){
+          console.log(msg);
+          var alert = phonon.alert(msg + ' has taken the ball!', 'New ball owner', true, 'ok');
+          alert.on('confirm', function() {
+            updateBallOwnerText(msg);
+          });
+          alert.open();
+        });
+      });
       /**
        * The activity scope is not mandatory.
        * For the home page, we do not need to perform actions during
@@ -161,8 +172,8 @@ var ballCode = $('#ballCode').value;
 
   // Now use it!
   fetch(request).then(function(res) { 
-    getBallFunc();
-    window.location = '#!home';
+    socket.emit('ball change', ballName);
+    window.location = '#!home';     
   });
             
             });
@@ -185,7 +196,3 @@ var ballCode = $('#ballCode').value;
       function addClass(el, cl){
         el.classList.add(cl);
       };
-
-      socket.on('chat message', function(msg){
-        console.log(msg);
-      });
