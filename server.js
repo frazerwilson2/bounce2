@@ -28,7 +28,7 @@ var mongoose   = require('mongoose');
         io.emit('ball change', msg);
     });
 });
-server.listen(3000);
+server.listen(process.env.PORT || 3000);
 
 //mongoose.connect('mongodb://localhost/'); // connect to our database
 mongoose.connect('mongodb://frazer:frazer@ds013569.mlab.com:13569/heroku_c741jbjg');
