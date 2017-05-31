@@ -5,25 +5,37 @@
 	padding: 0;
  }
 
-#ballInfo {
+ $paleblue: #B0F7FF;
+ $darkblue: #224960;
+
+#ballInfo, #ballHeader {
 	position: absolute;
-	bottom: 0;
-	height: 60px;
-	background: #11114a;
-	color: white;
+	height: 50px;
+	background: $darkblue;
+	color: $paleblue;   
 	padding: 1em;
 	width: 100%;
+   font-size: 1.1em;
+   font-weight: bold;
+   font-family: Helvetica;
+   z-index: 2;
 }
 
-// .grab_screen {	
-// 	display: none;
-// }
+#ballInfo {
+   bottom: 0;
+   border-top: 1px $paleblue solid;
+}
 
-//  .ball_select {
-//  	#map {
-//  		display:none;
-//  	}
-//  	.grab_screen {
-//  		display: block;
-//  	}
-//  }
+#ballHeader {
+   top: 0;
+   border-bottom: 1px $paleblue solid;
+}
+
+.style-window {
+   background: $paleblue !important;
+   color: $darkblue !important;
+}
+   
+.gm-style-iw span {
+   font-weight: bold;
+}

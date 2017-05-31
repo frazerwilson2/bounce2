@@ -4,13 +4,31 @@ html, body, #map {
   margin: 0;
   padding: 0; }
 
-#ballInfo {
+#ballInfo, #ballHeader {
   position: absolute;
-  bottom: 0;
-  height: 60px;
-  background: #11114a;
-  color: white;
+  height: 50px;
+  background: #224960;
+  color: #B0F7FF;
   padding: 1em;
-  width: 100%; }
+  width: 100%;
+  font-size: 1.1em;
+  font-weight: bold;
+  font-family: Helvetica;
+  z-index: 2; }
+
+#ballInfo {
+  bottom: 0;
+  border-top: 1px #B0F7FF solid; }
+
+#ballHeader {
+  top: 0;
+  border-bottom: 1px #B0F7FF solid; }
+
+.style-window {
+  background: #B0F7FF !important;
+  color: #224960 !important; }
+
+.gm-style-iw span {
+  font-weight: bold; }
 
 /*# sourceMappingURL=main.css.map */
