@@ -4,6 +4,11 @@ html, body, #map {
   margin: 0;
   padding: 0; }
 
+h1 {
+  font-size: 22px;
+  font-weight: bold;
+  font-style: italic; }
+
 #ballInfo, #ballHeader {
   position: absolute;
   height: 50px;
@@ -15,6 +20,12 @@ html, body, #map {
   font-weight: bold;
   font-family: Helvetica;
   z-index: 2; }
+  #ballInfo img, #ballHeader img {
+    width: 20px;
+    float: left;
+    margin-right: 10px;
+    top: -2px;
+    position: relative; }
 
 #ballInfo {
   bottom: 0;
@@ -28,7 +39,31 @@ html, body, #map {
   background: #B0F7FF !important;
   color: #224960 !important; }
 
-.gm-style-iw span {
-  font-weight: bold; }
+.gm-style .gm-style-iw {
+  color: #224960 !important; }
+  .gm-style .gm-style-iw span {
+    font-weight: bold; }
+
+.content {
+  background: #224960;
+  color: #B0F7FF; }
+  .content input[type=text] {
+    background: #224960;
+    color: white; }
+  .content .btn.primary {
+    background: #FFC107 !important;
+    color: #224960 !important; }
+
+.dialog.active .content, .dialog.active ul.buttons {
+  background: #B0F7FF;
+  color: #224960; }
+
+.dialog.active .btn.primary {
+  background: none !important; }
+
+.header-bar {
+  background: #B0F7FF; }
+  .header-bar .title, .header-bar .btn {
+    color: #224960; }
 
 /*# sourceMappingURL=main.css.map */

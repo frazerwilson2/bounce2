@@ -1,6 +1,7 @@
 "use strict";
-var socket = io();
 
+// global vars
+var socket = io();
 var ballpos;
 var ownerId;
 var getBall = '/api/getball';
@@ -19,6 +20,7 @@ var getBallFunc = function(){
    console.log(data);
   });
 };
+// get current ball location/owner
 getBallFunc();
 
 // calc distance from ball
@@ -47,10 +49,10 @@ if (typeof(Number.prototype.toRad) === "undefined") {
 }
 
 function updateBallOwnerText(name){
-    $('#ballInfo').innerHTML = name + ' has the ball';
+    $('#ballInfo .owner').innerHTML = name + ' has the ball';
 }
 
-
+// create map and events
       function initMap() {
         var uluru = {lat: 51.541084, lng: -0.1048659};
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -309,10 +311,6 @@ function updateBallOwnerText(name){
           disableDefaultUI: true
         });
         var gmarkers = [];
-        // var marker = new google.maps.Marker({
-        //   position: uluru,
-        //   map: map
-        // });
         var removeMarkers = function(){
             for(var i=0; i<gmarkers.length; i++){
                 gmarkers[i].setMap(null);
@@ -329,8 +327,8 @@ function updateBallOwnerText(name){
           var marker = new google.maps.Marker({
             position: pos,
             map: map,
-            icon: 'rocket.png',
-            title: 'Uluru (Ayers Rock)'
+            icon: 'dot.png',
+            title: 'dot'
           });
           gmarkers.push(marker);
           var infowindow = new google.maps.InfoWindow({
@@ -349,8 +347,6 @@ function updateBallOwnerText(name){
           infowindow.open(map, marker);
           
         });
-
-      addClass($("#map"), 'working'); //fetch the element with the id ‘someid’
 
         map.addListener('dragend', function(event){
           lookForBall();
@@ -376,7 +372,6 @@ function updateBallOwnerText(name){
               gmarkers.push(ballMarker);
               ballMarker.addListener('click', function(event) {
                 console.log('take ball');
-//                addClass($('body'), 'ball_select');
                 window.location = '#!pagetwo';
               });     
             };
@@ -384,9 +379,7 @@ function updateBallOwnerText(name){
 
       } // init map
 
-
-
-
+      // phonon initiate
       phonon.options({
           navigator: {
               defaultPage: 'home',
@@ -404,7 +397,7 @@ function updateBallOwnerText(name){
       document.on('pagecreated', function(evt) {
         socket.on('ball change', function(msg){
           console.log(msg);
-          var alert = phonon.alert(msg + ' has taken the ball!', 'New ball owner', true, 'ok');
+          var alert = phonon.alert('New ball owner is ' + msg + '!', 'The ball has changed hands', true, 'ok');
           alert.on('confirm', function() {
             updateBallOwnerText(msg);
           });
@@ -418,43 +411,40 @@ function updateBallOwnerText(name){
       */
       app.on({page: 'home', preventClose: false, content: null});
 
-
+// TODO: rename to take ball page
       app.on({page: 'pagetwo', preventClose: true, content: 'pagetwo.html', readyDelay: 1}, function(activity) {
 
           var action = null;
 
           activity.onCreate(function() {
             $('#grabBall').addEventListener('click', function(){
-var ballName = $('#ballName').value;
-var ballCode = $('#ballCode').value;
+              var ballName = $('#ballName').value;
+              var ballCode = $('#ballCode').value;
 
-  var request = new Request(getBall + '/' + ownerId + '/' + ballName + '/' + ballpos.lat + '/' + ballpos.lng, {
-    method: 'POST',
-  });
-
-  // Now use it!
-  fetch(request).then(function(res) { 
-    socket.emit('ball change', ballName);
-    window.location = '#!home';     
-  });
-            
+            var request = new Request(getBall + '/' + ownerId + '/' + ballName + '/' + ballpos.lat + '/' + ballpos.lng, {
+              method: 'POST',
             });
 
+            // Now use it!
+            fetch(request).then(function(res) { 
+              socket.emit('ball change', ballName);
+              window.location = '#!home';     
+            });
+            
           });
 
-          activity.onClose(function(self) {
-              self.close();
-          });
+        });
+
+        activity.onClose(function(self) {
+            self.close();
+        });
 
       });
 
       // Let's go!
       app.start();
 
-
       // mimick jquery
       function $(selector) { return document.querySelector(selector)  };
       function $$(selector) { return document.querySelectorAll(selector) };
-      function addClass(el, cl){
-        el.classList.add(cl);
-      };
+      

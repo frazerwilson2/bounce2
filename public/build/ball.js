@@ -1,7 +1,8 @@
 "use strict";
 
-var socket = io();
+// global vars
 
+var socket = io();
 var ballpos;
 var ownerId;
 var getBall = '/api/getball';
@@ -20,6 +21,7 @@ var getBallFunc = function getBallFunc() {
     console.log(data);
   });
 };
+// get current ball location/owner
 getBallFunc();
 
 // calc distance from ball
@@ -46,9 +48,10 @@ if (typeof Number.prototype.toRad === "undefined") {
 }
 
 function updateBallOwnerText(name) {
-  $('#ballInfo').innerHTML = name + ' has the ball';
+  $('#ballInfo .owner').innerHTML = name + ' has the ball';
 }
 
+// create map and events
 function initMap() {
   var uluru = { lat: 51.541084, lng: -0.1048659 };
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -222,10 +225,6 @@ function initMap() {
     disableDefaultUI: true
   });
   var gmarkers = [];
-  // var marker = new google.maps.Marker({
-  //   position: uluru,
-  //   map: map
-  // });
   var removeMarkers = function removeMarkers() {
     for (var i = 0; i < gmarkers.length; i++) {
       gmarkers[i].setMap(null);
@@ -242,8 +241,8 @@ function initMap() {
     var marker = new google.maps.Marker({
       position: pos,
       map: map,
-      icon: 'rocket.png',
-      title: 'Uluru (Ayers Rock)'
+      icon: 'dot.png',
+      title: 'dot'
     });
     gmarkers.push(marker);
     var infowindow = new google.maps.InfoWindow({
@@ -261,8 +260,6 @@ function initMap() {
 
     infowindow.open(map, marker);
   });
-
-  addClass($("#map"), 'working'); //fetch the element with the id ‘someid’
 
   map.addListener('dragend', function (event) {
     lookForBall();
@@ -288,14 +285,13 @@ function initMap() {
       gmarkers.push(ballMarker);
       ballMarker.addListener('click', function (event) {
         console.log('take ball');
-        //                addClass($('body'), 'ball_select');
         window.location = '#!pagetwo';
       });
     };
   };
 } // init map
 
-
+// phonon initiate
 phonon.options({
   navigator: {
     defaultPage: 'home',
@@ -312,7 +308,7 @@ var app = phonon.navigator();
 document.on('pagecreated', function (evt) {
   socket.on('ball change', function (msg) {
     console.log(msg);
-    var alert = phonon.alert(msg + ' has taken the ball!', 'New ball owner', true, 'ok');
+    var alert = phonon.alert('New ball owner is ' + msg + '!', 'The ball has changed hands', true, 'ok');
     alert.on('confirm', function () {
       updateBallOwnerText(msg);
     });
@@ -326,6 +322,7 @@ document.on('pagecreated', function (evt) {
 */
 app.on({ page: 'home', preventClose: false, content: null });
 
+// TODO: rename to take ball page
 app.on({ page: 'pagetwo', preventClose: true, content: 'pagetwo.html', readyDelay: 1 }, function (activity) {
 
   var action = null;
@@ -361,8 +358,5 @@ function $(selector) {
 };
 function $$(selector) {
   return document.querySelectorAll(selector);
-};
-function addClass(el, cl) {
-  el.classList.add(cl);
 };
 //# sourceMappingURL=ball.js.map

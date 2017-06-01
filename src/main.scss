@@ -8,6 +8,29 @@
  $paleblue: #B0F7FF;
  $darkblue: #224960;
 
+ @mixin darkcolour($imp:false){
+   @if($imp){
+      color: $darkblue !important;   
+   }
+   @else {
+      color: $darkblue;     
+   }
+ }
+
+  @mixin lightbg(){
+   background: $paleblue;
+ }
+
+ @mixin darkbg(){
+   background: $darkblue;
+ }
+
+ h1 {
+   font-size: 22px;
+   font-weight: bold;
+   font-style: italic;
+ }
+
 #ballInfo, #ballHeader {
 	position: absolute;
 	height: 50px;
@@ -19,6 +42,13 @@
    font-weight: bold;
    font-family: Helvetica;
    z-index: 2;
+   img {
+      width: 20px;
+      float: left;
+      margin-right: 10px;
+      top: -2px;
+      position: relative;
+   }
 }
 
 #ballInfo {
@@ -33,9 +63,43 @@
 
 .style-window {
    background: $paleblue !important;
-   color: $darkblue !important;
+   @include darkcolour(true);
 }
-   
-.gm-style-iw span {
-   font-weight: bold;
+
+.gm-style .gm-style-iw {
+   @include darkcolour(true);
+   span {
+      font-weight: bold;
+   }
+}   
+
+// default tab colours
+.content {
+   background: $darkblue;
+   color: $paleblue;
+   input[type=text] {
+      @include darkbg();
+      color: white;
+   }
+   .btn.primary {
+      background: #FFC107!important;
+      @include darkcolour(true);
+   }
+}
+
+.dialog.active {
+   .content, ul.buttons {
+      @include lightbg();
+      @include darkcolour();
+   }
+   .btn.primary {
+      background: none !important;
+   }
+}
+
+.header-bar {
+   @include lightbg();
+   .title, .btn {
+      @include darkcolour();
+   }
 }
