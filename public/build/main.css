@@ -66,4 +66,7 @@ h1 {
   .header-bar .title, .header-bar .btn {
     color: #224960; }
 
+#ballCode {
+  display: none; }
+
 /*# sourceMappingURL=main.css.map */
