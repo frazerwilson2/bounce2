@@ -3,6 +3,19 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    jshint: {
+        all: ['src/ball_raw.js'],
+        options: {
+                globals: {
+                  phonon: true,
+                  google: true,
+                  fetch: true,
+                  io: true,
+                  Request: true
+                },
+                browser: true
+              }
+    },
     "babel": {
         options: {
           sourceMap: true
@@ -59,6 +72,7 @@ module.exports = function(grunt) {
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task(s).
   grunt.registerTask('default', ['babel','sass','cssmin']);

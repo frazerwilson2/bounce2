@@ -1,4 +1,6 @@
-"use strict";
+/*jshint esnext: true */
+/*jslint node: true */
+    "use strict";
 
 // global vars
 var socket = io();
@@ -16,7 +18,7 @@ var getBallFunc = function(){
     ballpos = {
       lat: data.loc.lat, 
       lng: data.loc.lon
-    }
+    };
    console.log(data);
   });
 };
@@ -45,7 +47,7 @@ function numberWithCommas(x) {
 if (typeof(Number.prototype.toRad) === "undefined") {
   Number.prototype.toRad = function() {
     return this * Math.PI / 180;
-  }
+  };
 }
 
 function updateBallOwnerText(name){
@@ -374,8 +376,8 @@ function updateBallOwnerText(name){
                 console.log('take ball');
                 window.location = '#!pagetwo';
               });     
-            };
-      }
+            }
+      };
 
       } // init map
 
@@ -445,6 +447,6 @@ function updateBallOwnerText(name){
       app.start();
 
       // mimick jquery
-      function $(selector) { return document.querySelector(selector)  };
-      function $$(selector) { return document.querySelectorAll(selector) };
+      function $(selector) { return document.querySelector(selector);  }
+      function $$(selector) { return document.querySelectorAll(selector); }
       

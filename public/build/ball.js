@@ -1,3 +1,5 @@
+/*jshint esnext: true */
+/*jslint node: true */
 "use strict";
 
 // global vars
@@ -287,7 +289,7 @@ function initMap() {
         console.log('take ball');
         window.location = '#!pagetwo';
       });
-    };
+    }
   };
 } // init map
 
@@ -355,8 +357,8 @@ app.start();
 // mimick jquery
 function $(selector) {
   return document.querySelector(selector);
-};
+}
 function $$(selector) {
   return document.querySelectorAll(selector);
-};
+}
 //# sourceMappingURL=ball.js.map
