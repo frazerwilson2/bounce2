@@ -16,6 +16,14 @@ module.exports = function(grunt) {
                 browser: true
               }
     },
+    jasmine: {
+      test: {
+        src: 'public/build/ball.js',
+        options: {
+            specs: 'spec/ballspec.js'
+        }
+      }
+    },
     "babel": {
         options: {
           sourceMap: true
@@ -73,6 +81,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-jasmine');
 
   // Default task(s).
   grunt.registerTask('default', ['babel','sass','cssmin']);

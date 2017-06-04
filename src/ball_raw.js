@@ -1,5 +1,6 @@
 /*jshint esnext: true */
 /*jslint node: true */
+/* jshint browser: true */
     "use strict";
 
 // global vars
@@ -54,8 +55,11 @@ function updateBallOwnerText(name){
     $('#ballInfo .owner').innerHTML = name + ' has the ball';
 }
 
+var ballApp = ballApp || {};
+
+function ballAppInit(){
+
 // create map and events
-      function initMap() {
         var uluru = {lat: 51.541084, lng: -0.1048659};
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 15,
@@ -377,9 +381,12 @@ function updateBallOwnerText(name){
                 window.location = '#!pagetwo';
               });     
             }
-      };
+      };  // look for ball
 
-      } // init map
+
+
+};// init map
+
 
       // phonon initiate
       phonon.options({
@@ -450,3 +457,5 @@ function updateBallOwnerText(name){
       function $(selector) { return document.querySelector(selector);  }
       function $$(selector) { return document.querySelectorAll(selector); }
       
+
+  module.exports = ballApp;
