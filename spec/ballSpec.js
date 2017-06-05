@@ -12,9 +12,6 @@ beforeEach(function () {
 	
 	// Start listening to xhr requests
     jasmine.Ajax.install();
-    //Give a custom answer to my function's request.
-    request = jasmine.Ajax.requests.mostRecent();
-    request.respondWith({ status: 200, responseText: "Oh yeah!" });
   });
 
 describe('Hello world', function () {

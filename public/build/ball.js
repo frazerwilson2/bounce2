@@ -10,7 +10,8 @@ var ballpos;
 var ownerId;
 var getBall = '/api/getball';
 
-var getBallFunc = function getBallFunc() {
+// get current ball location/owner
+(function () {
   fetch(getBall).then(function (blob) {
     return blob.json();
   }).then(function (data) {
@@ -23,38 +24,7 @@ var getBallFunc = function getBallFunc() {
     };
     console.log(data);
   });
-};
-// get current ball location/owner
-getBallFunc();
-
-// calc distance from ball
-function distance(lon1, lat1, lon2, lat2) {
-  var R = 6371; // Radius of the earth in km
-  var dLat = (lat2 - lat1).toRad(); // Javascript functions in radians
-  var dLon = (lon2 - lon1).toRad();
-  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var d = R * c * 1000; // Distance in km
-  console.clear();
-  return Math.round(d);
-}
-
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-/** Converts numeric degrees to radians */
-if (typeof Number.prototype.toRad === "undefined") {
-  Number.prototype.toRad = function () {
-    return this * Math.PI / 180;
-  };
-}
-
-function updateBallOwnerText(name) {
-  $('#ballInfo .owner').innerHTML = name + ' has the ball';
-}
-
-var ballApp = ballApp || {};
+})();
 
 function ballAppInit() {
 
@@ -258,7 +228,6 @@ function ballAppInit() {
     google.maps.event.addListener(infowindow, 'domready', function () {
       // Reference to the DIV which receives the contents of the infowindow using jQuery
       var iwOuter = $('.gm-style-iw');
-      console.log(iwOuter.parentNode.childNodes[0].childNodes[3]);
       iwOuter.parentNode.childNodes[0].childNodes[3].classList.add('style-window');
       iwOuter.parentNode.childNodes[0].childNodes[2].childNodes[0].childNodes[0].classList.add('style-window');
       iwOuter.parentNode.childNodes[0].childNodes[2].childNodes[1].childNodes[0].classList.add('style-window');
@@ -291,14 +260,45 @@ function ballAppInit() {
       gmarkers.push(ballMarker);
       ballMarker.addListener('click', function (event) {
         console.log('take ball');
-        window.location = '#!pagetwo';
+        window.location = '#!getball';
       });
     }
   }; // look for ball
-
 }; // init map
 
 
+// mimick jquery
+function $(selector) {
+  return document.querySelector(selector);
+}
+function $$(selector) {
+  return document.querySelectorAll(selector);
+}
+
+// calc distance from ball
+function distance(lon1, lat1, lon2, lat2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = (lat2 - lat1).toRad(); // Javascript functions in radians
+  var dLon = (lon2 - lon1).toRad();
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c * 1000; // Distance in km
+  console.clear();
+  return Math.round(d);
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/** Converts numeric degrees to radians */
+if (typeof Number.prototype.toRad === "undefined") {
+  Number.prototype.toRad = function () {
+    return this * Math.PI / 180;
+  };
+}
+
+//module.exports = ballApp;
 // phonon initiate
 phonon.options({
   navigator: {
@@ -330,8 +330,13 @@ document.on('pagecreated', function (evt) {
 */
 app.on({ page: 'home', preventClose: false, content: null });
 
-// TODO: rename to take ball page
-app.on({ page: 'pagetwo', preventClose: true, content: 'pagetwo.html', readyDelay: 1 }, function (activity) {
+// Let's go!
+app.start();
+
+function updateBallOwnerText(name) {
+  $('#ballInfo .owner').innerHTML = name + ' has the ball';
+}
+app.on({ page: 'getball', preventClose: true, content: 'getball.html', readyDelay: 1 }, function (activity) {
 
   var action = null;
 
@@ -355,18 +360,5 @@ app.on({ page: 'pagetwo', preventClose: true, content: 'pagetwo.html', readyDela
   activity.onClose(function (self) {
     self.close();
   });
-});
-
-// Let's go!
-app.start();
-
-// mimick jquery
-function $(selector) {
-  return document.querySelector(selector);
-}
-function $$(selector) {
-  return document.querySelectorAll(selector);
-}
-
-module.exports = ballApp;
+}); // get ball page
 //# sourceMappingURL=ball.js.map

@@ -24,6 +24,15 @@ module.exports = function(grunt) {
         }
       }
     },
+    concat: {
+        options: {
+          separator: '\n',
+        },
+        dist: {
+          src: ['src/init.js', 'src/home.js', 'src/get_ball.js'],
+          dest: 'src/ball_raw.js',
+        },
+      },
     "babel": {
         options: {
           sourceMap: true
@@ -67,7 +76,7 @@ module.exports = function(grunt) {
       watch: {
         scripts: {
           files: ['src/main.scss','src/ball_raw.js'],
-          tasks: ['sass','cssmin','babel'],
+          tasks: ['sass','cssmin','concat','babel'],
           options: {
             spawn: false,
           },
@@ -80,9 +89,10 @@ module.exports = function(grunt) {
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
   // Default task(s).
-  grunt.registerTask('default', ['babel','sass','cssmin']);
+  grunt.registerTask('default', ['concat','babel','sass','cssmin']);
 };
