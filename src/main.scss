@@ -82,8 +82,11 @@
       color: white;
    }
    .btn.primary {
-      background: #FFC107!important;
+      background: #ffff00 !important;
       @include darkcolour(true);
+   }
+   input.err {
+      background: rgba(199, 72, 72, 0.5);
    }
 }
 
@@ -104,6 +107,28 @@
    }
 }
 
-#ballCode {
-   display:none;
+#passBlock {
+   width: 300px;
+   margin: 6% auto;
+   height: 300px;
+   div {
+      display: inline-block;
+      width: 90px;
+      height: 90px;
+      margin: 5px;
+      float: left;
+      border: 1px $paleblue dashed;
+      &.zero {
+         background: red;
+         &.one {
+            background: blue;
+            &.two {
+               background: green;
+               &.three {
+                  background: yellow;
+               }
+            }
+         }
+      }
+   }
 }

@@ -29,9 +29,6 @@ document.on('pagecreated', function(evt) {
 */
 app.on({page: 'home', preventClose: false, content: null});
 
-// Let's go!
-app.start();
-
 function updateBallOwnerText(name){
     $('#ballInfo .owner').innerHTML = name + ' has the ball';
 }

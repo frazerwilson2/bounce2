@@ -51,8 +51,10 @@ h1 {
     background: #224960;
     color: white; }
   .content .btn.primary {
-    background: #FFC107 !important;
+    background: #ffff00 !important;
     color: #224960 !important; }
+  .content input.err {
+    background: rgba(199, 72, 72, 0.5); }
 
 .dialog.active .content, .dialog.active ul.buttons {
   background: #B0F7FF;
@@ -66,7 +68,24 @@ h1 {
   .header-bar .title, .header-bar .btn {
     color: #224960; }
 
-#ballCode {
-  display: none; }
+#passBlock {
+  width: 300px;
+  margin: 6% auto;
+  height: 300px; }
+  #passBlock div {
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    margin: 5px;
+    float: left;
+    border: 1px #B0F7FF dashed; }
+    #passBlock div.zero {
+      background: red; }
+      #passBlock div.zero.one {
+        background: blue; }
+        #passBlock div.zero.one.two {
+          background: green; }
+          #passBlock div.zero.one.two.three {
+            background: yellow; }
 
 /*# sourceMappingURL=main.css.map */

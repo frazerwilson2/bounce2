@@ -384,4 +384,7 @@ function ballAppInit(){
         };
       }
 
+  // Let's go!
+app.start();
+
   //module.exports = ballApp;

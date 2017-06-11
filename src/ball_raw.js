@@ -1,3 +1,110 @@
+// phonon initiate
+phonon.options({
+    navigator: {
+        defaultPage: 'home',
+        animatePages: true,
+        enableBrowserBackButton: true,
+        templateRootDirectory: './tpl'
+    },
+    i18n: null // for this example, we do not use internationalization
+});
+
+var app = phonon.navigator();
+
+// global event works
+document.on('pagecreated', function(evt) {
+  socket.on('ball change', function(msg){
+    console.log(msg);
+    var alert = phonon.alert('New ball owner is ' + msg + '!', 'The ball has changed hands', true, 'ok');
+    alert.on('confirm', function() {
+      updateBallOwnerText(msg);
+    });
+    alert.open();
+  });
+});
+/**
+ * The activity scope is not mandatory.
+ * For the home page, we do not need to perform actions during
+ * page events such as onCreate, onReady, etc
+*/
+app.on({page: 'home', preventClose: false, content: null});
+
+function updateBallOwnerText(name){
+    $('#ballInfo .owner').innerHTML = name + ' has the ball';
+}
+  app.on({page: 'getball', preventClose: true, content: 'getball.html', readyDelay: 1}, function(activity) {
+
+      var action = null;
+
+      activity.onCreate(function() {
+        $('#ballName').classList.remove('err');
+
+        $('#ballName').addEventListener('click', function(){
+          $('#ballName').classList.remove('err');
+        });
+
+        var passBlocks = document.querySelectorAll('#passBlock div');
+        passBlocks.forEach(function(block) {
+          block.addEventListener('click', function(){
+            var currentVal = parseInt(this.dataset.val);
+            var currentIndex = parseInt(this.dataset.num);
+            switch(currentVal){
+              case 0:
+                this.dataset.val = 1;
+                this.classList.add('one');
+                break;
+              case 1:
+                this.dataset.val = 2;
+                this.classList.add('two');
+                break;
+              case 2:
+                this.dataset.val = 3;
+                this.classList.add('three');
+                break;
+              case 3:
+                this.dataset.val = 0;
+                this.className = '';
+                this.classList.add('zero');
+                break;
+            };
+            var ballCode = $('#ballCode').value;
+            var newCode = Array.from(ballCode);
+            newCode[currentIndex + 3] = (currentVal + 1);
+            var resultCode = newCode.join("");
+            $('#ballCode').value = resultCode;
+          });
+        });
+
+        $('#grabBall').addEventListener('click', function(){
+          var ballName = $('#ballName').value;
+          var ballCode = $('#ballCode').value;
+
+          console.log(ballCode);
+
+          if(!ballName){
+            $('#ballName').classList.add('err');
+            return;
+          }
+
+          var request = new Request(getBall + '/' + ownerId + '/' + ballName + '/' + ballpos.lat + '/' + ballpos.lng + '/' + ballCode, {
+            method: 'POST',
+          });
+
+          // Now use it!
+          fetch(request).then(function(res) { 
+            socket.emit('ball change', ballName);
+            window.location = '#!home';     
+          });
+   
+        });
+
+    });
+
+    activity.onClose(function(self) {
+        self.close();
+    });
+
+  }); // get ball page
 /*jshint esnext: true */
 /*jslint node: true */
 /* jshint browser: true */
@@ -384,69 +491,7 @@ function ballAppInit(){
         };
       }
 
-  //module.exports = ballApp;
-// phonon initiate
-phonon.options({
-    navigator: {
-        defaultPage: 'home',
-        animatePages: true,
-        enableBrowserBackButton: true,
-        templateRootDirectory: './tpl'
-    },
-    i18n: null // for this example, we do not use internationalization
-});
-
-var app = phonon.navigator();
-
-// global event works
-document.on('pagecreated', function(evt) {
-  socket.on('ball change', function(msg){
-    console.log(msg);
-    var alert = phonon.alert('New ball owner is ' + msg + '!', 'The ball has changed hands', true, 'ok');
-    alert.on('confirm', function() {
-      updateBallOwnerText(msg);
-    });
-    alert.open();
-  });
-});
-/**
- * The activity scope is not mandatory.
- * For the home page, we do not need to perform actions during
- * page events such as onCreate, onReady, etc
-*/
-app.on({page: 'home', preventClose: false, content: null});
-
-// Let's go!
+  // Let's go!
 app.start();
 
-function updateBallOwnerText(name){
-    $('#ballInfo .owner').innerHTML = name + ' has the ball';
-}
-  app.on({page: 'getball', preventClose: true, content: 'getball.html', readyDelay: 1}, function(activity) {
-
-      var action = null;
-
-      activity.onCreate(function() {
-        $('#grabBall').addEventListener('click', function(){
-          var ballName = $('#ballName').value;
-          var ballCode = $('#ballCode').value;
-
-        var request = new Request(getBall + '/' + ownerId + '/' + ballName + '/' + ballpos.lat + '/' + ballpos.lng, {
-          method: 'POST',
-        });
-
-        // Now use it!
-        fetch(request).then(function(res) { 
-          socket.emit('ball change', ballName);
-          window.location = '#!home';     
-        });
-        
-      });
-
-    });
-
-    activity.onClose(function(self) {
-        self.close();
-    });
-
-  }); // get ball page
+  //module.exports = ballApp;

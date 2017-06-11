@@ -29,7 +29,7 @@ module.exports = function(grunt) {
           separator: '\n',
         },
         dist: {
-          src: ['src/init.js', 'src/home.js', 'src/get_ball.js'],
+          src: ['src/home.js', 'src/get_ball.js', 'src/init.js'],
           dest: 'src/ball_raw.js',
         },
       },

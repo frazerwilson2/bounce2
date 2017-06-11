@@ -165,27 +165,28 @@ router.route('/players')
         });
     });
 
-     router.route('/getball/:player_id/:player_name/:player_lat/:player_lon')
+     router.route('/getball/:player_id/:player_name/:player_lat/:player_lon/:code')
 
      .post(function(req, res) {
         // set hasball false
-        Player.update({hasBall:true}, {hasBall: false}, {multi: true}, 
-            function(err, num) {
-            console.log("updated "+num);
-            }
-        );
+            // Player.update({hasBall:true}, {hasBall: false}, {multi: true}, 
+            //     function(err, num) {
+            //     console.log("updated "+num);
+            //     }
+            // );
         // set new hasball true
-        var query = { _id: req.params.player_id };
-        Player.findOneAndUpdate(query, { hasBall: true }, function(err, doc){
-            if (err) return res.send(500, { error: err });
-            return res.send("succesfully saved");
-        });
+            // var query = { _id: req.params.player_id };
+            // Player.findOneAndUpdate(query, { hasBall: true }, function(err, doc){
+            //     if (err) return res.send(500, { error: err });
+            //     return res.send("succesfully saved");
+            // });
         // update ball
         var ballRec = new Ball();
         ballRec.owner = req.params.player_name;
         ballRec.loc = {lat:req.params.player_lat, lon:req.params.player_lon};
         ballRec.taketime = new Date();
         ballRec.bouncetime = new Date();
+        ballRec.pass = req.params.code;
         ballRec.save(function(err, data) {
             if (err)
                 res.send(err);
