@@ -75,7 +75,7 @@ module.exports = function(grunt) {
       },
       watch: {
         scripts: {
-          files: ['src/main.scss','src/ball_raw.js'],
+          files: ['src/*'],
           tasks: ['sass','cssmin','concat','babel'],
           options: {
             spawn: false,

@@ -29,7 +29,18 @@ document.on('pagecreated', function (evt) {
  * For the home page, we do not need to perform actions during
  * page events such as onCreate, onReady, etc
 */
-app.on({ page: 'home', preventClose: false, content: null });
+app.on({ page: 'home', preventClose: false, content: null }, function (activity) {
+
+  activity.onReady(function () {
+    checkOwner();
+  });
+});
+
+function checkOwner() {
+  var ownerToken = localStorage.getItem('ballOwner');
+  console.log('msg check: ' + ownerToken);
+  ownerToken ? document.body.classList.add('ball-owner') : document.body.classList.remove('ball-owner');
+}
 
 function updateBallOwnerText(name) {
   $('#ballInfo .owner').innerHTML = name + ' has the ball';
@@ -81,8 +92,6 @@ app.on({ page: 'getball', preventClose: true, content: 'getball.html', readyDela
       var ballName = $('#ballName').value;
       var ballCode = $('#ballCode').value;
 
-      console.log(ballCode);
-
       if (!ballName) {
         $('#ballName').classList.add('err');
         return;
@@ -96,6 +105,7 @@ app.on({ page: 'getball', preventClose: true, content: 'getball.html', readyDela
       fetch(request).then(function (res) {
         socket.emit('ball change', ballName);
         window.location = '#!home';
+        localStorage.setItem('ballOwner', ballCode);
       });
     });
   });

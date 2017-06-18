@@ -30,10 +30,22 @@ h1 {
 #ballInfo {
   bottom: 0;
   border-top: 1px #B0F7FF solid; }
+  .ball-owner #ballInfo {
+    background: #ffdf5b; }
+  #ballInfo .default-view {
+    display: block; }
+    .ball-owner #ballInfo .default-view {
+      display: none; }
+  #ballInfo .owner-view {
+    display: none; }
+    .ball-owner #ballInfo .owner-view {
+      display: block; }
 
 #ballHeader {
   top: 0;
   border-bottom: 1px #B0F7FF solid; }
+  .ball-owner #ballHeader {
+    background: #ffdf5b; }
 
 .style-window {
   background: #B0F7FF !important;

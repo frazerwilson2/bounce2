@@ -7,6 +7,7 @@
 
  $paleblue: #B0F7FF;
  $darkblue: #224960;
+ $glow: #ffdf5b;
 
  @mixin darkcolour($imp:false){
    @if($imp){
@@ -54,11 +55,30 @@
 #ballInfo {
    bottom: 0;
    border-top: 1px $paleblue solid;
+   .ball-owner & {
+      background: $glow;
+   }
+
+   .default-view {
+      display: block;
+      .ball-owner & {
+         display: none;
+      }
+   }
+   .owner-view {
+      display: none;
+      .ball-owner & {
+         display: block;
+      }
+   }
 }
 
 #ballHeader {
    top: 0;
    border-bottom: 1px $paleblue solid;
+   .ball-owner & {
+      background: $glow;
+   }
 }
 
 .style-window {

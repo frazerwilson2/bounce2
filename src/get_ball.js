@@ -45,8 +45,6 @@
           var ballName = $('#ballName').value;
           var ballCode = $('#ballCode').value;
 
-          console.log(ballCode);
-
           if(!ballName){
             $('#ballName').classList.add('err');
             return;
@@ -59,7 +57,8 @@
           // Now use it!
           fetch(request).then(function(res) { 
             socket.emit('ball change', ballName);
-            window.location = '#!home';     
+            window.location = '#!home';
+            localStorage.setItem('ballOwner', ballCode);     
           });
    
         });
