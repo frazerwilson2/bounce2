@@ -24,7 +24,7 @@
     "socket.io": "^1.7.3"
   },
   "engines": {
-    "node": "5.9.1"
+    "node": "6.11.1"
   },
   "author": "FW",
   "license": "ISC",
