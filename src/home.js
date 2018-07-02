@@ -37,10 +37,29 @@ app.on({page: 'home', preventClose: false, content: null}, function(activity) {
 });
 
 function checkOwner(){
-    let ownerToken = localStorage.getItem('ballOwner');
-    console.log('msg check: ' + ownerToken);
-    ownerToken ? document.body.classList.add('ball-owner') : document.body.classList.remove('ball-owner');
-}
+    const ownerToken = localStorage.getItem('ballOwner');
+
+    if(ownerToken){
+        fetch('/api/checkowner', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({pass: ownerToken})
+        })
+        .then(blob => blob.json())
+        .then(function(data){
+            console.log('pass match: ' + data);
+            if(data){
+                document.body.classList.add('ball-owner')    
+            }
+            else {
+                document.body.classList.remove('ball-owner');
+            }
+        });
+    }
+};
 
 function updateBallOwnerText(name){
     $('#ballInfo .owner').innerHTML = name + ' has the ball';

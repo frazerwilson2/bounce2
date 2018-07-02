@@ -165,6 +165,15 @@ router.route('/players')
         });
     });
 
+    router.route('/checkowner')
+    .post(function(req, res) {
+        console.log('check pass ' + req.body.pass);
+        Ball.findOne({}, {}, { sort: { 'taketime' : -1 } }, function(err, ball) {
+            var passMatch = ball.pass == req.body.pass;
+            res.json(passMatch);
+        });
+    });
+
      router.route('/getball/:player_id/:player_name/:player_lat/:player_lon/:code')
 
      .post(function(req, res) {
