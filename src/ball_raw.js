@@ -18,6 +18,7 @@ document.on('pagecreated', function(evt) {
     var alert = phonon.alert('New ball owner is ' + msg + '!', 'The ball has changed hands', true, 'ok');
     alert.on('confirm', function() {
       updateBallOwnerText(msg);
+      checkOwner();
     });
     alert.open();
   });
@@ -56,6 +57,7 @@ function checkOwner(){
             }
             else {
                 document.body.classList.remove('ball-owner');
+                localStorage.removeItem('ballOwner');
             }
         });
     }
