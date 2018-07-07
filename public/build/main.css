@@ -29,9 +29,11 @@ h1 {
 
 #ballInfo {
   bottom: 0;
-  border-top: 1px #B0F7FF solid; }
+  border-top: 1px #B0F7FF solid;
+  text-align: center; }
   .ball-owner #ballInfo {
-    background: #ffdf5b; }
+    background: #ffdf5b;
+    color: #224960; }
   #ballInfo .default-view {
     display: block; }
     .ball-owner #ballInfo .default-view {
@@ -39,13 +41,16 @@ h1 {
   #ballInfo .owner-view {
     display: none; }
     .ball-owner #ballInfo .owner-view {
-      display: block; }
+      display: block;
+      color: #224960; }
 
 #ballHeader {
   top: 0;
-  border-bottom: 1px #B0F7FF solid; }
+  border-bottom: 1px #B0F7FF solid;
+  text-align: center; }
   .ball-owner #ballHeader {
-    background: #ffdf5b; }
+    background: #ffdf5b;
+    color: #224960; }
 
 .style-window {
   background: #B0F7FF !important;

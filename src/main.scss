@@ -55,8 +55,10 @@
 #ballInfo {
    bottom: 0;
    border-top: 1px $paleblue solid;
+   text-align: center;
    .ball-owner & {
       background: $glow;
+      color: $darkblue;
    }
 
    .default-view {
@@ -69,6 +71,7 @@
       display: none;
       .ball-owner & {
          display: block;
+         color: $darkblue;
       }
    }
 }
@@ -76,8 +79,10 @@
 #ballHeader {
    top: 0;
    border-bottom: 1px $paleblue solid;
+   text-align: center;
    .ball-owner & {
       background: $glow;
+      color: $darkblue;
    }
 }
 

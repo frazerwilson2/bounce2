@@ -13,14 +13,14 @@ var app = phonon.navigator();
 
 // global event works
 document.on('pagecreated', function(evt) {
+    console.log('page created');
   socket.on('ball change', function(msg){
-    console.log(msg);
     var alert = phonon.alert('New ball owner is ' + msg + '!', 'The ball has changed hands', true, 'ok');
     alert.on('confirm', function() {
       updateBallOwnerText(msg);
       checkOwner();
     });
-    alert.open();
+    alert.close();
   });
 
 });
@@ -53,11 +53,13 @@ function checkOwner(){
         .then(function(data){
             console.log('pass match: ' + data);
             if(data){
-                document.body.classList.add('ball-owner')    
+                document.body.classList.add('ball-owner');
+                isBallOwner = true;  
             }
             else {
                 document.body.classList.remove('ball-owner');
                 localStorage.removeItem('ballOwner');
+                isBallOwner = false;
             }
         });
     }

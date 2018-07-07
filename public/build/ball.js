@@ -15,14 +15,14 @@ var app = phonon.navigator();
 
 // global event works
 document.on('pagecreated', function (evt) {
+  console.log('page created');
   socket.on('ball change', function (msg) {
-    console.log(msg);
     var alert = phonon.alert('New ball owner is ' + msg + '!', 'The ball has changed hands', true, 'ok');
     alert.on('confirm', function () {
       updateBallOwnerText(msg);
       checkOwner();
     });
-    alert.open();
+    alert.close();
   });
 });
 /**
@@ -54,9 +54,11 @@ function checkOwner() {
       console.log('pass match: ' + data);
       if (data) {
         document.body.classList.add('ball-owner');
+        isBallOwner = true;
       } else {
         document.body.classList.remove('ball-owner');
         localStorage.removeItem('ballOwner');
+        isBallOwner = false;
       }
     });
   }
@@ -76,41 +78,42 @@ app.on({ page: 'getball', preventClose: true, content: 'getball.html', readyDela
       $('#ballName').classList.remove('err');
     });
 
-    var passBlocks = document.querySelectorAll('#passBlock div');
-    passBlocks.forEach(function (block) {
-      block.addEventListener('click', function () {
-        var currentVal = parseInt(this.dataset.val);
-        var currentIndex = parseInt(this.dataset.num);
-        switch (currentVal) {
-          case 0:
-            this.dataset.val = 1;
-            this.classList.add('one');
-            break;
-          case 1:
-            this.dataset.val = 2;
-            this.classList.add('two');
-            break;
-          case 2:
-            this.dataset.val = 3;
-            this.classList.add('three');
-            break;
-          case 3:
-            this.dataset.val = 0;
-            this.className = '';
-            this.classList.add('zero');
-            break;
-        };
-        var ballCode = $('#ballCode').value;
-        var newCode = Array.from(ballCode);
-        newCode[currentIndex + 3] = currentVal + 1;
-        var resultCode = newCode.join("");
-        $('#ballCode').value = resultCode;
-      });
-    });
+    // var passBlocks = document.querySelectorAll('#passBlock div');
+    // passBlocks.forEach(function(block) {
+    //   block.addEventListener('click', function(){
+    //     var currentVal = parseInt(this.dataset.val);
+    //     var currentIndex = parseInt(this.dataset.num);
+    //     switch(currentVal){
+    //       case 0:
+    //         this.dataset.val = 1;
+    //         this.classList.add('one');
+    //         break;
+    //       case 1:
+    //         this.dataset.val = 2;
+    //         this.classList.add('two');
+    //         break;
+    //       case 2:
+    //         this.dataset.val = 3;
+    //         this.classList.add('three');
+    //         break;
+    //       case 3:
+    //         this.dataset.val = 0;
+    //         this.className = '';
+    //         this.classList.add('zero');
+    //         break;
+    //     };
+    //     var ballCode = $('#ballCode').value;
+    //     var newCode = Array.from(ballCode);
+    //     newCode[currentIndex + 3] = (currentVal + 1);
+    //     var resultCode = newCode.join("");
+    //     $('#ballCode').value = resultCode;
+    //   });
+    // });
 
     $('#grabBall').addEventListener('click', function () {
       var ballName = $('#ballName').value;
-      var ballCode = $('#ballCode').value;
+      var nowTime = new Date();
+      var ballCode = nowTime.getTime();
 
       if (!ballName) {
         $('#ballName').classList.add('err');
@@ -123,8 +126,8 @@ app.on({ page: 'getball', preventClose: true, content: 'getball.html', readyDela
 
       // Now use it!
       fetch(request).then(function (res) {
-        socket.emit('ball change', ballName);
         window.location = '#!home';
+        socket.emit('ball change', ballName);
         localStorage.setItem('ballOwner', ballCode);
       });
     });
@@ -144,6 +147,9 @@ var socket = io();
 var ballpos;
 var ownerId;
 var getBall = '/api/getball';
+var isBallOwner = false;
+var marker;
+var currentpos = {};
 
 // get current ball location/owner
 (function () {
@@ -162,177 +168,37 @@ var getBall = '/api/getball';
 })();
 
 function ballAppInit() {
+  grabLoc(createMaps);
+};
+
+var grabLoc = function grabLoc(callback) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      currentpos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      callback();
+      // infoWindow.setPosition(pos);
+      // infoWindow.setContent('Location found.');
+      // infoWindow.open(map);
+      // map.setCenter(pos);
+    }, function () {
+      alert('didnt get location');
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    alert('you wont allow geo, loser!');
+  }
+};
+
+function createMaps() {
 
   // create map and events
-  var uluru = { lat: 51.541084, lng: -0.1048659 };
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15,
-    center: uluru,
-    styles: [{
-      "elementType": "geometry",
-      "stylers": [{
-        "color": "#1d2c4d"
-      }]
-    }, {
-      "elementType": "labels.text.fill",
-      "stylers": [{
-        "color": "#8ec3b9"
-      }]
-    }, {
-      "elementType": "labels.text.stroke",
-      "stylers": [{
-        "color": "#1a3646"
-      }]
-    }, {
-      "featureType": "administrative.country",
-      "elementType": "geometry.stroke",
-      "stylers": [{
-        "color": "#4b6878"
-      }]
-    }, {
-      "featureType": "administrative.land_parcel",
-      "elementType": "labels.text.fill",
-      "stylers": [{
-        "color": "#64779e"
-      }]
-    }, {
-      "featureType": "administrative.province",
-      "elementType": "geometry.stroke",
-      "stylers": [{
-        "color": "#4b6878"
-      }]
-    }, {
-      "featureType": "landscape.man_made",
-      "elementType": "geometry.stroke",
-      "stylers": [{
-        "color": "#334e87"
-      }]
-    }, {
-      "featureType": "landscape.natural",
-      "elementType": "geometry",
-      "stylers": [{
-        "color": "#023e58"
-      }]
-    }, {
-      "featureType": "poi",
-      "elementType": "geometry",
-      "stylers": [{
-        "color": "#283d6a"
-      }]
-    }, {
-      "featureType": "poi",
-      "elementType": "labels.text.fill",
-      "stylers": [{
-        "color": "#6f9ba5"
-      }]
-    }, {
-      "featureType": "poi",
-      "elementType": "labels.text.stroke",
-      "stylers": [{
-        "color": "#1d2c4d"
-      }]
-    }, {
-      "featureType": "poi.business",
-      "stylers": [{
-        "visibility": "off"
-      }]
-    }, {
-      "featureType": "poi.park",
-      "elementType": "geometry.fill",
-      "stylers": [{
-        "color": "#023e58"
-      }]
-    }, {
-      "featureType": "poi.park",
-      "elementType": "labels.text",
-      "stylers": [{
-        "visibility": "off"
-      }]
-    }, {
-      "featureType": "poi.park",
-      "elementType": "labels.text.fill",
-      "stylers": [{
-        "color": "#3C7680"
-      }]
-    }, {
-      "featureType": "road",
-      "elementType": "geometry",
-      "stylers": [{
-        "color": "#304a7d"
-      }]
-    }, {
-      "featureType": "road",
-      "elementType": "labels.text.fill",
-      "stylers": [{
-        "color": "#98a5be"
-      }]
-    }, {
-      "featureType": "road",
-      "elementType": "labels.text.stroke",
-      "stylers": [{
-        "color": "#1d2c4d"
-      }]
-    }, {
-      "featureType": "road.highway",
-      "elementType": "geometry",
-      "stylers": [{
-        "color": "#2c6675"
-      }]
-    }, {
-      "featureType": "road.highway",
-      "elementType": "geometry.stroke",
-      "stylers": [{
-        "color": "#255763"
-      }]
-    }, {
-      "featureType": "road.highway",
-      "elementType": "labels.text.fill",
-      "stylers": [{
-        "color": "#b0d5ce"
-      }]
-    }, {
-      "featureType": "road.highway",
-      "elementType": "labels.text.stroke",
-      "stylers": [{
-        "color": "#023e58"
-      }]
-    }, {
-      "featureType": "transit",
-      "elementType": "labels.text.fill",
-      "stylers": [{
-        "color": "#98a5be"
-      }]
-    }, {
-      "featureType": "transit",
-      "elementType": "labels.text.stroke",
-      "stylers": [{
-        "color": "#1d2c4d"
-      }]
-    }, {
-      "featureType": "transit.line",
-      "elementType": "geometry.fill",
-      "stylers": [{
-        "color": "#283d6a"
-      }]
-    }, {
-      "featureType": "transit.station",
-      "elementType": "geometry",
-      "stylers": [{
-        "color": "#3a4762"
-      }]
-    }, {
-      "featureType": "water",
-      "elementType": "geometry",
-      "stylers": [{
-        "color": "#0e1626"
-      }]
-    }, {
-      "featureType": "water",
-      "elementType": "labels.text.fill",
-      "stylers": [{
-        "color": "#4e6d70"
-      }]
-    }],
+    center: currentpos,
+    styles: [{ "elementType": "geometry", "stylers": [{ "color": "#1d2c4d" }] }, { "elementType": "labels.text.fill", "stylers": [{ "color": "#8ec3b9" }] }, { "elementType": "labels.text.stroke", "stylers": [{ "color": "#1a3646" }] }, { "featureType": "administrative.country", "elementType": "geometry.stroke", "stylers": [{ "color": "#4b6878" }] }, { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#64779e" }] }, { "featureType": "administrative.province", "elementType": "geometry.stroke", "stylers": [{ "color": "#4b6878" }] }, { "featureType": "landscape.man_made", "elementType": "geometry.stroke", "stylers": [{ "color": "#334e87" }] }, { "featureType": "landscape.natural", "elementType": "geometry", "stylers": [{ "color": "#023e58" }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#283d6a" }] }, { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#6f9ba5" }] }, { "featureType": "poi", "elementType": "labels.text.stroke", "stylers": [{ "color": "#1d2c4d" }] }, { "featureType": "poi.business", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [{ "color": "#023e58" }] }, { "featureType": "poi.park", "elementType": "labels.text", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#3C7680" }] }, { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#304a7d" }] }, { "featureType": "road", "elementType": "labels.text.fill", "stylers": [{ "color": "#98a5be" }] }, { "featureType": "road", "elementType": "labels.text.stroke", "stylers": [{ "color": "#1d2c4d" }] }, { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#2c6675" }] }, { "featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [{ "color": "#255763" }] }, { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#b0d5ce" }] }, { "featureType": "road.highway", "elementType": "labels.text.stroke", "stylers": [{ "color": "#023e58" }] }, { "featureType": "transit", "elementType": "labels.text.fill", "stylers": [{ "color": "#98a5be" }] }, { "featureType": "transit", "elementType": "labels.text.stroke", "stylers": [{ "color": "#1d2c4d" }] }, { "featureType": "transit.line", "elementType": "geometry.fill", "stylers": [{ "color": "#283d6a" }] }, { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#3a4762" }] }, { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#0e1626" }] }, { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#4e6d70" }] }],
     disableDefaultUI: true
   });
   var gmarkers = [];
@@ -340,28 +206,91 @@ function ballAppInit() {
     for (var i = 0; i < gmarkers.length; i++) {
       gmarkers[i].setMap(null);
     }
-    lookForBall();
   };
-  map.addListener('click', function (event) {
-    var pos = { lat: event.latLng.lat(), lng: event.latLng.lng() };
-    console.log(pos);
-    var ballDistance = distance(event.latLng.lng(), event.latLng.lat(), ballpos.lng, ballpos.lat);
-    console.log(ballDistance);
 
-    removeMarkers();
-    var marker = new google.maps.Marker({
-      position: pos,
+  var watchOptions = {
+    enableHighAccuracy: false,
+    timeout: 10000,
+    maximumAge: 100
+  };
+
+  var watch = navigator.geolocation.watchPosition(function (position) {
+    console.log(position);
+    currentpos = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    };
+    map.setCenter(currentpos);
+    var ballDistance = distance(currentpos.lng, currentpos.lat, ballpos.lng, ballpos.lat);
+    showMarker(currentpos, ballDistance);
+  }, function (err) {
+    console.log(err);
+  }, watchOptions);
+
+  map.addListener('click', function (event) {
+    grabLoc(function () {
+      if (isBallOwner) {
+        showMarker(currentpos, 0);
+        return;
+      }
+      var ballDistance = distance(currentpos.lng, currentpos.lat, ballpos.lng, ballpos.lat);
+      showMarker(currentpos, ballDistance);
+    });
+  });
+
+  // map.addListener('dragend', function(event){
+  //   lookForBall();
+  // });
+  // map.addListener('zoom_changed', function(event){
+  //   lookForBall();
+  // });
+
+  var showBall = function showBall() {
+    console.log('look for ball');
+    // console.log('close enough');
+    var ballMarker = new google.maps.Marker({
+      position: { lat: ballpos.lat, lng: ballpos.lng },
       map: map,
-      icon: 'dot.png',
+      icon: 'ball.png',
+      title: 'Uluru (Ayers Rock)'
+    });
+    gmarkers.push(ballMarker);
+    ballMarker.addListener('click', function (event) {
+      if (!isBallOwner) {
+        console.log('take ball');
+        window.location = '#!getball';
+      }
+    });
+  }; // look for ball
+
+  var showMarker = function showMarker(pos, distance) {
+    var closeCheck = distance < 100;
+    var z = map.getZoom();
+    console.log(distance, closeCheck);
+    removeMarkers();
+    if (z >= 15 && closeCheck) {
+      showBall();
+    }
+
+    marker = new google.maps.Marker({
+      position: isBallOwner ? { lat: ballpos.lat, lng: ballpos.lng } : pos,
+      map: map,
+      icon: isBallOwner ? 'ball.png' : 'dot.png',
       title: 'dot'
     });
     gmarkers.push(marker);
+
+    var windowContent;
+    if (!isBallOwner) {
+      windowContent = 'You are <span>' + numberWithCommas(distance) + 'M</span> from the ball';
+    } else {
+      windowContent = 'Last bounced here';
+    }
     var infowindow = new google.maps.InfoWindow({
-      content: 'You are <span>' + numberWithCommas(ballDistance) + 'M</span> from the ball'
+      content: windowContent
     });
 
     google.maps.event.addListener(infowindow, 'domready', function () {
-      // Reference to the DIV which receives the contents of the infowindow using jQuery
       var iwOuter = $('.gm-style-iw');
       iwOuter.parentNode.childNodes[0].childNodes[3].classList.add('style-window');
       iwOuter.parentNode.childNodes[0].childNodes[2].childNodes[0].childNodes[0].classList.add('style-window');
@@ -369,38 +298,8 @@ function ballAppInit() {
     });
 
     infowindow.open(map, marker);
-  });
-
-  map.addListener('dragend', function (event) {
-    lookForBall();
-  });
-  map.addListener('zoom_changed', function (event) {
-    lookForBall();
-  });
-  var lookForBall = function lookForBall() {
-    console.log('look for ball');
-    var z = map.getZoom();
-    var cLat = map.getCenter().lat();
-    var cLon = map.getCenter().lng();
-    var closeness = distance(cLon, cLat, ballpos.lng, ballpos.lat);
-    console.log(closeness);
-    if (z >= 15 && closeness <= 100) {
-      console.log('close enough');
-      var ballMarker = new google.maps.Marker({
-        position: { lat: ballpos.lat, lng: ballpos.lng },
-        map: map,
-        icon: 'ball.png',
-        title: 'Uluru (Ayers Rock)'
-      });
-      gmarkers.push(ballMarker);
-      ballMarker.addListener('click', function (event) {
-        console.log('take ball');
-        window.location = '#!getball';
-      });
-    }
-  }; // look for ball
+  };
 }; // init map
-
 
 // mimick jquery
 function $(selector) {
@@ -418,7 +317,6 @@ function distance(lon1, lat1, lon2, lat2) {
   var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c * 1000; // Distance in km
-  console.clear();
   return Math.round(d);
 }
 
@@ -435,6 +333,4 @@ if (typeof Number.prototype.toRad === "undefined") {
 
 // Let's go!
 app.start();
-
-//module.exports = ballApp;
 //# sourceMappingURL=ball.js.map

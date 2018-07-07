@@ -94,5 +94,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
   // Default task(s).
-  grunt.registerTask('default', ['concat','babel']);
+  grunt.registerTask('default', ['concat','babel','sass','cssmin']);
 };
