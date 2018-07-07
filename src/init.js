@@ -45,8 +45,12 @@ var grabLoc = function(callback){
       // infoWindow.setContent('Location found.');
       // infoWindow.open(map);
       // map.setCenter(pos);
-    }, function() {
-      alert('didnt get location');
+    }, function(e) {
+      console.log(e);
+      alert(e);
+      setTimeout(()=>{
+          grabLoc(createMaps);
+        }, 5000);
     });
   } else {
     // Browser doesn't support Geolocation

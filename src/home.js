@@ -13,7 +13,6 @@ var app = phonon.navigator();
 
 // global event works
 document.on('pagecreated', function(evt) {
-    console.log('page created');
   socket.on('ball change', function(msg){
     var alert = phonon.alert('New ball owner is ' + msg + '!', 'The ball has changed hands', true, 'ok');
     alert.on('confirm', function() {

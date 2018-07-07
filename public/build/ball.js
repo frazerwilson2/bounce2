@@ -15,7 +15,6 @@ var app = phonon.navigator();
 
 // global event works
 document.on('pagecreated', function (evt) {
-  console.log('page created');
   socket.on('ball change', function (msg) {
     var alert = phonon.alert('New ball owner is ' + msg + '!', 'The ball has changed hands', true, 'ok');
     alert.on('confirm', function () {
@@ -183,8 +182,12 @@ var grabLoc = function grabLoc(callback) {
       // infoWindow.setContent('Location found.');
       // infoWindow.open(map);
       // map.setCenter(pos);
-    }, function () {
-      alert('didnt get location');
+    }, function (e) {
+      console.log(e);
+      alert(e);
+      setTimeout(function () {
+        grabLoc(createMaps);
+      }, 5000);
     });
   } else {
     // Browser doesn't support Geolocation
